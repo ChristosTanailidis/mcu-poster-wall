@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1b160f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Case File">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIk1DVSBDYXNlIEZpbGUiLCAic2hvcnRfbmFtZSI6ICJDYXNlIEZpbGUiLCAic3RhcnRfdXJsIjogIi4iLCAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwgImJhY2tncm91bmRfY29sb3IiOiAiIzFiMTYwZiIsICJ0aGVtZV9jb2xvciI6ICIjMWIxNjBmIiwgImljb25zIjogW3sic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBZ0FBQUFJQUNBSUFBQUI3R2tPdEFBQUpKMGxFUVZSNDJ1M2RNVzZrM0JhRjBZTkZUa0RBVUFnWUd4RmpJMkJXRHB5VUxOdVNvV3dLOWxxNVcwOVY5NTZQZzEvMzN3eDlWd0RrZWZNUkFBZ0FBQUlBZ0FBQUlBQUFDQUFBQWdDQUFBQWdBQUFJQUFBQ0FJQUFBQ0FBQUFnQUFBSUFnQUFBSUFBQUNBQUFBZ0NBQUFBZ0FBQUlBQUFDQUlBQUFBZ0FBQUlBZ0FBQUlBQUFDQUFBQWdDQUFBQWdBQUFJQUFBQ0FJQUFBQ0FBQUFnQUFBSUFnQUFBSUFBQUNBQUFBZ0NBQUFBZ0FBQUlBQUFDQUlBQUFBZ0FBQUlBZ0FBQUlBQUFDQUFBQWdDQUFBQWdBQUFJQUFBQ0FJQUFBQ0FBQUFnQUFBSUFnQUFBSUFBQUNBQUFBZ0NBQUFBZ0FBQUlBQUFDQUlBQUFDQUFBTGxhSDhGQjJ6ejVFT0FzNDdMNkVIWnJocjd6S1JqNklBWUNnS0VQWWlBQUdQMGdBd0pnOUFNeUlBQkdQeUFEQW1EMEF6SlEvaDZBNlErNDR3TGdaQUJ1ZW5rRjVFQUE1WFdRRGNEMEI5eDlBWEFDQUJOQUFIejNnRGtnQUw1MXdEUVFBTjgzWUNZSWdHOGFNQmtFQUFBQkVIbkFmQkFBM3k1Z1NnaUE3eFV3S3dRQUFBSHcrQStZR0RZQUFMSUM0UEVmTURkc0FBREVCTURqUDJCNjJBQUFpQW1BeDMvQURMRUJBQ0FBQUFnQVFLeG02THZ5OHU2WWNWbTlYb1FiMzZEZC93dGZYT3Z3blhnc1BuNWNCbkNEM0tEeUNpanE3TjcrNFFMY0lBRndkcDFnY0lNRW9QeS9kd0h6UkFBOHZIaUV3UTF5Z3dRQUFBRUFRQUFBRUFBQUJBQUFBUUJBQUFBUUFBQUVBQUFCQUVBQUFCQUFBQUVBUUFBQUVBQUFCQUFBQVFCQUFBQVFnUElmQ0MzLzBWRndnd1FBQUFId0NPUGhCZHdnQVhDQ25WMXdnMTVJNnlNNGZ2TEdaWFZ3d1EwU0FBOHlnQnRVWGdFQklBQUFDQUFBQWdDQUFBQWdBQUFJQUFBQ0FJQUFBQ0FBQUFnQUFBSUFnQUFBSUFBQUNBQUFBZ0FnQUFBSUFBQUNBSUFBQUNBQUFBZ0FBQUlBZ0FBQUlBQUFDQUFBQWdDQUFBQWdBQUFJQUFBQ0FJQUFBQ0FBQUFnQUFBSUFnQUFBSUFBQUNBQUFBZ0NRclBVUkhEY3U2NzRmM09iSnB3ZHVrQUJrSGR6SEgzZUljWVBjb1BJS0tPcnNQdjNQQVRjSUFialMyWFdDY1lQY0lBRUFRQURDSGw0OHd1QUd1VUVDQUlBQTRPa1BFQUJ1MlFBWkFBSEFLZ0FJQUZZQlFBQ3dDZ0FDZ0ZVQUVBQ3NBb0FBWUJVQUJBQ3JBQ0FBV0FVQUFjQXFBQWdBVmdGQUFMQUtBQUtBVlFBRUFLd0NJQUJnRlFBQkFLc0FDQUNmYmZOMGlUL1RLb0FiaEFCZ0ZRQUU0Q1VmTnp5OFdBWGNJRGRJQUJKUHNMTnJGWENEM0tCVHRENkM0eWR2OTl4eGNQK29BVDVZTndnQnVQQnZ0RGlZQVYrS0cwUjVCWVRmQ2dBQ2dOOEtBQUtBVlFBRXdFZUFWUUFFQUt3Q0lBQmdGUUFCQUtzQUNBQllCVUFBd0NvQUFnQldBUkFBc0FxQUFJQlZBQVFBckFJZ0FHQVZBQUVBcXdBSUFGZ0ZRQURBS2dBQ0FGWUJFQUN3Q29BQWdGVUFCQUNzQWlBQVlCVUFBUUNyQUFnQVdBVkFBTUFxQUFJQVZnRVFBTEFLSUFDQVZRQUJBS3dDQ0FCZ0ZVQUFBS3NBQWdCWUJSQUF3Q3FBQUFCV0FRUUFzQW9nQUlCVkFBRUFyQUlJQUdBVlFBQkFBNndDQ0FCWUJlQS90VDZDRTYvdU5rOCtQVDRkcE1CVDRRWUpRT0pUVyt5RjUrZFRrWE1rM0tEeUNpaDhaN2Y3ay9sYkFUZElBTHl4ZFlKSlBCVnVrQUFBVmdFRUlQN1J6RDBuNTJ5NFFRSUFXQVVRQU1CRExnSUFXQVVRQU1BcWdBQUFWZ0VFQUxBS0lBQ0FWUUFCQUtzQUNBQllCYUQ4YTZDUXd6K0tpUTBBVEgrd0FZRFJEellBTVAzQkJnQkdQOWdBd1BUSEJnQVkvZGdBQU5NZkd3Qmc5R01ENEs5dm94dE96dGx3ZzJ3QWdLR0dEU0QrWnJybnBKMEtOMGdBbkdCbmw2K1BSTUtwY0lQS0s2QWJuT0RkL3dTamcwdjRxWENEQk1DTmhlaUQ1QWFWVjBCZytvTU5BSXgrc0FHQTZRODJBREQ2UVFEQTZJZnlDZ2hNZjdBQmdORVBOZ0F3L2NFR0FFWS8yQURBOUFjYkFCajkyQUFBMHg4YkFHRDBZd01BVEg5c0FJRFJqdzBBTVAyeEFRQkdQellBTVAzQkJnQkdQOWdBd1BRSEd3QVkvV0FEQU5NZmJBQmc5SU1BZ05FUDVSVVFtUDVnQXdDakgyd0FZUHFERFFDTWZyQUJnT2tQTmdBdytzRUdBS1kvMkFEQTZBY2JBSmorWUFQQTZBZHNBSmorWUFNQW94OXNBR0Q2Z3cwQWpINndBWURwRHpZQU1QcEJBS2dhbDlXY012MXhnd1RBd2YzMWp6dkVScjhiNUFhVjN3RkVuZDJuL3puaG85OFVjSU1RZ0l1ZFhTZllnNzhiNUFhVlYwQmc5SU1OSU92aHhTT002ZThHdVVFMkFERDZ3UVlBcGovWUFNRG9CeHNBcGo5Z0E4RG9CMndBbVA2QURRQ2pIN0FCWVBvRE5nQ01mc0FHZ09rUDJBQXcrc0VHQUtZLzJBREE2QWNiQUpqK1lBTUFveDlzQUdENmd3QUFJQUFBQ0VCNWlWRmVqSUFiSkFBQUNJQkhHQTh2NEFZSmdCUHM3SUliVlA0ZXdDMU84TGlzRGk2NFFRTGdRUVp3ZzhvcklBQUVBQUFCQUVBQUFCQUFBQVFBQUFFQVFBQUFFQUFBQkFBQUFRQkFBQUFRQUFBRUFBQUJBRUFBQUFRQUFBRUFRQUFBRUFBQUJBQUFBUUJBQUFBUUFBQUVBQUFCQUVBQUFCQUFBQVFBQUFFQVFBQUFFQUFBQkFBQUFRQkFBQUFRQUFBRUFBQUJBRUFBQUpLMVBvTGp4bVhkOTRQYlBQbjB3QTBTZ0t5RCsvampEakZ1a0J0VVhnRkZuZDJuL3puZ0JpRUFWenE3VGpCdWtCc2tBQUFJUU5qRGkwY1kzQ0EzU0FBQUVBQUFCQUFBQVFCQUFBQVFBQUFFQUFBQkFFQUFBQkFBQUFRQVFBQUFFQUFBQkFBQUFRQkFBQUFRQUFBRUFBQUJpTEROMHlYK1RIQ0RTQXlBLzBBb1lKN1lBQzd3Q09QaEJUZklEUktBeEJQczdPSUd1VUduYUgwRXgwL2U3dlhRd2NVTmNvTk8xQXg5NXhFRG9QSitvZWdWRUVENUhRQUFBZ0NBQUpTWGQwRDVCWUFBQUNBQUFnNllIZ0lBZ0FESU9HQnVDQUFBQWlEbWdJa2hBQUFJZ0tRRFpvVUErRjRCVTBJQWZMdUErU0FBQUFpQXlBTW1nd0Q0cGdFelFRQjgzNEJwSUFDK2RjQWNFQURmUFdBQ0NJQVRBTGo3MzJtR3ZuTU9QbXp6NUVNQW85OEc0RXdBYnJvQU9CbUFPMTVlQVpYWFFZRFJMd0F5QUJqOUFpQURnTkV2QURJQUdQMENJQWFBb1M4QVlnQVkrZ0lBUVBsN0FBQUlBQUFDQUlBQUFDQUFBQWdBQUFJQWdBQUFJQUFBQ0FBQUFnQ0FBQUFnQUFBQ0FJQUFBQ0FBQUFnQUFBSUFnQUFBSUFBQUNBQUFBZ0NBQUFBZ0FBQUlBQUFDQUlBQUFDQUFBQWdBQUFJQWdBQUFJQUFBQ0FBQUFnQ0FBQUFnQUFBQ0FJQUFBQ0FBQUFnQUFBSUFnQUFBSUFBQUNBQUFBZ0NBQUFBZ0FBQUlBQUFDQUlBQUFDQUFBQWdBQUFJQWdBQUFJQUFBQ0FBQUFnQ0FBQUFnQUFBQzRDTUFFQUFBQkFBQUFRQkFBQUFRQUFBRUFBQUJBRUFBQUJBQUFBUUFnRmZ4RHVkTC9HWDZMVGtwQUFBQUFFbEZUa1N1UW1DQyIsICJzaXplcyI6ICI1MTJ4NTEyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIn0sIHsic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBTFFBQUFDMENBSUFBQUN5cjVGbEFBQVd4MGxFUVZSNDJ1MWRlM0JjMVhrLzN6bm4zcnVyZmNrcnlaSnRXWmFFSkNBUnhnWWJBb1NFcDRIRVlRcWhUVzBHbWtrbVF3Z2tMYVIwQ0FUeW1IU0dKaTZadGpNWm02UjVrR1NtU1VsSU0wMHd1RTFTQ0ptU09zallrVEVtbG8wa3h6YVdaTzM3N2oyUHIzOWNTVjdKa2lEeTd0VktPcis1NHorazhXanZ0Ny96blhPKzF3OGE2eExFd0dBNlVHTUNBME1PQTBNT0EwTU9BME1PQTBNT0EwTU9BME1PQTBNT0EwTU9BME1PQXdORERnTkREZ05ERGdORERnTkREZ05ERGdORERnTkREZ05ERGdORERnTURRdzZEdHdRUDdDOEJJWlNDc2ZoWlFpTWlMaUp5VUFCQ2lGRGFMU3FOQ0lTZytaTC85S1hsR3kxa01Zc0JvNkEwTG14eUFCQUtrSFVsSWFRdWFtOXNpMTdZRWx2YkhQZWtCakJlNU8wQ0VTMUdUNlNMTHgwYTNYOHNjMnkwbUhGbFBNUnBoU2tDbGV0NFl4UThxWE9lV3Q4Uy8raDdWbC9hdHF3dWFqa1cxVWdNTCthTTRheDNaS2p3N1JjSG45MTMwbE02SHVLeVl2eW9GRGs0ZzVHY1dKbHdIdHJjY1gxM1E0M05DcDRTS3NBTmM1SENZdFRod0NoOVpTRDkxZWY2ZHU0YmFvamJXQm03Vm9RY2pNSm9Ycnk3Sy9tNW16dTdtMk1qV1U4am9kUnNKT1hZWWdoQlJJMGtFZVlGb2Y1bDF4dGZmNzdmNXBRQ0tUcy9XTFFtVkhhZk1ab1hOM1EzZk9QRGE1TlJhelFuR1FWcWpoamxPNWtDQUFWd2hTWUUzbi9oOGxpSTcrb2Rjamd0dSs4b016azRoWkc4dUxJeitZMlByUFVVRm9YbXpMQ2lnbmZBVkVGZTJaV3NzZG5QOTU2TU9MeTh6cU9jNUFBZ1FtRkQxUG1ucmU5SVJxeWkwTXdFTmlvZk9zcDdhbU5iN2FFMzgvdi9tSFU0dytxTWtGS0F2S2Mrcy9tYzdsV3hyS3NNTXdMYVpRaEloVis2OWR6R3VDT1VMdVArWFRaeU1JQnNVYTFyaVcvcWJoakpDYk9iQk1jUElLN1F5K1AybGt0WFpsekp5c2NPV3NaVE5FSDg2SldySXpiVE0yOTlTcU5HZ3BNZmphak5GYmZFa2tvam5tRWwvNGN6WFE5elJmV2hTMWFlc3p6aUNnMVZGU0VGUW9UU2RWSDcwdlpsZVUvTmRHbEZRaEpoTHYyWGhQR29NQkxPUUNvc0NHVnV1NGlFVVlqWGNFOXFnTEdRdVc4bG05TzhwNlRDTTQwRVFJcFNyMXptckY4VGYvcDN4eDNMS2t2a3REemtvQlRjb3RyUUZrMUdyYUpRMDk1YmtaQVFwei80djJNLzJuMGNTdDVLYW15STJ2ZGUxM3B1WXlTL3RQbmhNME1vL2RqUGo3elVOMm96OEYwRkFQRWtybDBkdStmYU5UR0hpMm41UVFnaXVXaE40a2U3ajFWZGJrVWpybXVKaHl4YThOU1o1dzJ0TVI3bVAvanRzVTk5dnpmaWNGSVNzS0VBQlUvdEdVZy9kYzlGeVlnOTdjcFlPam1Va01VKzk1T0QzM3Bob0RZeWFmVXpnT2NQRGcrT3VGKzdzNXNvblBia0lSVjJyNHJGUXJ4Y0NaZHkzbGJXTnNkbTJoUUJRR3I4MGU3amtSQ0xoM25FNGRIeHA4Wm1qUW1uZjlqOTVmN2hxTU9XN09FRGtUZ1dIVHhWZUs1M3FESGgxRmdzV21LbHNNMVcxb1plZUgzazlSTzVzRTNQL1BZQndCVzZ2YUdtSWVhSU1pMndjbVpsUFltem43TUF4ZzVXVXhpZ05LRmc4dmhqRktGQXBpOXNRREo3ak54M0h2Ny9yVHJQY1Rac05jeVk5Ni9BbEFrYVZDczVadWUxU2MyOXBSMWdMQUt3Nk1pQmhFaUZNOTFVZ1JDaGNJblRBd2pSaUVwUGY1d0VJQnFKMU1GWmlRYkdESXRDUTh3dWVNb3ZnWng0T0FVZ1JDRTJ4WjBnMzd3S0lUWEdRanpxY0U5b2k5RlNLMW1NQ29VaGl5NkxXSUZaS2JqcWM2bnczdXRhOXd5ays0Y0xGQUJMbG92U2VOdkdGZGU4b3k3anFpVmJvZTdudE91ajluMmIyaDU4NnNESnJEZmx3c0lwUEhCamUwc3lsQzRvU2hjUk9TaVFndERuTmtXZXV1ZmlYN3c2ak9QWExkOGlqUW5uMnZQcjFKSXZMbVVVMHE2NjllS216c2JJNzk1SVRZbVFkamZITnJRbU1tNUF6QWpVYzFBZ2VVOGxJOWFIcjFnMUtmaEJpTktZS1NwQ1RPRXhvVUN5UmZtT2xkR0xXdU00dmxpUUVBQW9DcFV0eWlEVEN6emc0aVdwY0NRbnBsMDA1cDV5T3A4Z1ZONVQwL1o1a0VYWjhUYnhoc3pjV2Q5T0NTQ1lYbGtERXdRek1PUXdNT1F3TU9Rd01PUXdNRERrTUREa01DQUxOQWlta1p4WkplcTM5Wm5RV0dtMTlqUlZvb0hIa1huQTd4eXlXSTNOeHR0V3huSXJHakhqU3ExTnZjOVlHV25VNFRhblU2d2tsTTY2S2tnVDhTQjlSc1JoQjQ3bC9uUFBtNFNnVHdTL3hxY3A0ZHkyb2NuaFZDemh2b1FKWm9SdCtvdFhoLyszNzVUTjZFUlRreWYxdXBiNERkME5SYWtYR3prMFlzUmh2KzFMZmZTYnI2UUtFbUM4akJyQWYvUC8zai8weEljdktDOHpBSWpTQ0F0bk5JalNtQWp6SjM3Vi8vbi9lSjFSOER0TUo2d2tsTDV2VS92ZnZhODlzOGpxT1FnQkFIamlWLzBaVnpYR25kSXhWa0FJVVBqVmE4Tzdlay9lZW5IVGFGNldhMmYxcEU3VVdBVlBTWVhWbi9WRkpEYUhFK25pTjE0WWlJVloyR0tseHc2LzhPVzd2eG04YldQVDZtVFlGVHFBRjZLQlZVZEtqZG1pdERnSWhVcWZmcVJHclpFQnBQSmxLMWJ3bCtCM1hqejYrYWNQMm94R0t6bFZyZHd6TExRbmtWR1FVNnlra0JJaUVYTkZGUmpQYVpEVnN3eGdwcDRjSklTWDc2V1JFQXBRRk9wcnp4Myt5KzA5ZS9wVDlWSEw3OHFzL21LZm1UcVhrQkJLQWkzcG9BRVBGeUJCOVRVaElZeENKR0x0SFV6ZnZtUFBsNS9wWXhRaXpnSndJVmcxclY5MDBRKzZpRHFjVVhqODJjTmJ0dmU4TXBDdWk5citBZG5jbWF2TWM4eGNRUXlFVk9qNzBocUJrR1RFMmp1UTNyS2o1eXZQSFBKZGlLcEtncnpsWndyeVE5TWdkMVBPUUNQaGRGTGZpdjhvUkxzQ3d4SkxYVWpFNFp6QzR6djd0bXp2ZWFVL25ZeGFmbTF6VlRIRFlnRGp3ZEFwajM4a3N6Z0V4ZzhhMk9RSkNuRG41YXMwNG5ET0c4MkxpU2Rka0g4Y2RkYzJ4Ni92cnMrNkZheXU5ajFGWGRUZU81RGVzcjFuMnpOOUZNQy95R0IxOUswVXBWNjFMSFRiaGhVbk0xNnFJS2RZNlZpcXVQbkN4czdHU0NHUWUyeUFmU3NVc3E2NnJydit5WSt0Ky9IdTR3VEdaQUQ4cVFHTmNlY2pWemJISE83S2lyKzIxQmh4T0NKdTIzbjRmMTRiZWVUbXprdmFhOU41SWZYOHgwTDgwVjczMzlDMnVpNzBteitjY3ZqWUhBNEE0a205dmlXeDlWMHJpMElIZGwvaFFhNk1mRkcvcHl0NXpmbDFVNVlxQU1sN0tnQm1sTHFRK3FpMWR5QzlkVWZQeDY5cXVldnFOVkdiWlZ6SjVqdi9oNFJJalhkYzNuem41YzFuL2paYmxBcUQ2eGpsd1hmc1RPdkVLVURBNjFacWpJYTQwcmh0WjkrNEMwbWs4bEpWZ1F0SjVjVk1EaGdXOFZXV3dqU25VVFpQbzlIOTAyaDl6UFpkeUZlZTZXTVVZaUV1RmM3Ny9qSzlsVXljSTJCSWhkRVE1eFQrY1dmZmx1MDlQVytrNm1NV3FiS0xqS2tFSS9PWURpV0UxRWZ0dlFQcDI1OFlDNmRXZ3dzeDVLaWk4UmpSRUdmanNaQ2UvblI5ekY3S0xzU1FZNm9MZ2ZGWXlPMDdlcjc4ekNGR1lhRWtkUTA1QXJwTWpybVFaOGZDcVhWK1VuZUpaV1FNT1daekljbUl2WGNnczJYOEl1TW5kZEdRdzJBOEk4UDRKQmRpdzBLb0N6SGtJSUdGVTVNUmUrOWdlc3VPbm0xK1VqZTBKRndJblRlSncvSFNGVndndTB6RTVoYURiVHY3dG16djJkT2Zyb3RVTnFtTEpZYWFMeXZSZWRqTFlhd1lqb0kvNklmZ1FuRFV2b2k4SHd2WnVxTm4yODQrQ2hDcmdBdngxWWtZRUpoc3BXazduUmJSQkdOQ0VqV1cwaWdVU2pYMmIxR2l4U0FhNGd2Q1QwdU5rUkMzS0d6YjJiZDFSMDlQZjdvK2FwZlJoU0FTaTBQVTRVVTVacUlKSzBVY0hySm9rUHpnQVVzWmZ2VzV2cCsrL09aRWtzQVg0MWxXWTkxL1E5c1ZIY21jSjZ1L0xWS1haR1J1MzlGejExVXRkMTNWVWhQaTZZSThTMlU3dnp0aEpDY2UrOW1obnY2MFZUSnFVa2c4YjJYa00rL3ZXTFVzRkZqV25nZG0wSGdOMy9ITC9yLy82Ui9xb2phUzAzSmxGT0R3eWZ3OTMrMTkrcE1YclU2R1Bia3dtdDc4akl6U3VHM240ZWRmRy9uc3pSMlh0aThiell1elNlb2lRUWIwMFI4ZmZQcmw0dzB4dXpUeXhpZ2NlRGs3a2hOUGZtd2RMTExXQkFBUUNwL3JIVXJVV0NHTDJwdzYxdGhqY2FpTDJpTjU4ZXVEcDJZWEQ2elNqRXpNMmpQZ0Y3Z2ZHanVGekNramcwZ2NUZ2RQdVM4ZEhtMnFkVGlEQ1JNNUZ1VU1taExPdnNIMG9SUDV3RGFYUU04Y0ZnWC9WSFdtN2lFbFpLd0JrQ3k4cEc1c1BDUGpuMEtXeCswNXZ3c0E0UlJtVW9ka3dmWjIwcVhaa1ZHcGpNeGcrczZ2Ny9uaVQxOVBGY1NjQzRaTTN3cFpmT0ZValNUcThGTjVzYXQzYUNqak1Rb0xQVXpHalJoUGVleElJZU5LenVqOW05cnZ2WFlOWStCNmM3bFR3T3hpUE1FT051WkJyaTBocHhmajhkL1prd3RTYklWUlVCcUhzMkw5bXZnak4zZGUzbEdieWt0UDZUbmN5ZjEyYzZXbnR4SUY4SlJlakdJOGlEYUQxb1p3MXBXY0FvWFRqOTlSam9TME40UzloU2JXeEJsa2kwb28vT3ROcmY5Mjkvb05yWW1ock5CemJYY1dDdXVpZG4zVXpoWWxaNU9zeENua1BWa2J0aG9UZG1DU1ZqeXdxMnhSNkU5ZDEzcndlRzd2UUliU2lha2tCSkZRU3U2K3V1WEtybVMyS0JlS0dBK2pvRFVPWmNURnJmSFBmcUR6OG83YTBiek11SExPc3dMOGVHQXN4Qi9lM1BIQUQxOGR5Z3A2ZXNJTjBab2t3dnd6bXpzYTQwNm1FSkNWQWlNSDhTU3VxQTE5LzY1MXV3K25OSjdlV1gyNThuVXQ4YnkzTUxUS2ZXbUxyQ3M1bzMrenFmVVQxNndKVzJ3b0svd0M4Yk1rWExZb3J6cXY3aWVmMnJEL2FMWTAzaW9VZGpWRzJockNRWXBaQmRyVTVBck5BSzQrdnc0bUtSR0RWRHBnbVpteitmNDhxVjJoMXErSlAvaStjeTd2VEtiejRtd2N4cGtIaTJ4Uk5rVHRHeTVvbU5Dem1oRGpDY3huekU5VGt5WWtYWkR6TGpNelo2V1kwWUpJUnV5SE5uZmNmdGtxUkJ6SmV2U3NIY2FaL0JBS2kyZjBOVkVBU2hlM0dNL0NGR1ZpRklUQ1VWZHNlbWY5UTVzN3ptMktuTXFMeWdsTVZZbGtFU2NHYjhkaDVFVXlZai8wd1hPM1hyWktheHpPaXJOTXdKb2dHRmtFY28xQzZWRlhYdi9PK29mSEhJWWtCSmNDTXd3NVpoL2NCcU41c1N4aVAvVEJqcTJYcmRTYURPY0VwN0IwUkN3Tk9hYVBoUmVFeWhmMTlkMzFuOTNjMFRYaE1KYVloS1VoeDFTSEFRQkRXYStyS2ZxeDk2NytpNDByTkM0NWgySElNYVBEOENUZWNWbnpwMjlxVzVFSWplUThRb0F2VmMxYlE0N3hRQXVCNFp4b2I2aDVlSFBIVFJjMDVEMDFsUEdXeU1IVGtHTjJoNkU5cVc2L2JPVURON2JYeDV4VGVVRUJsamd6NW9FYzA3YW96RmVFMU44dVJuS2liZHhoNUR5VnlvdDVEOVBoZEpKRk5IRDloNERGZUFpakpGNWpsWExGTDJMSUJaNWJHWGNZZXV1N1Z2N3RUZTBONHc1ajNwbWhFUjFPUXhZdkZlT2hoTGhTdXlMUTNHU2dZandoaSthSzhtY0gzc1F4Vm93eG95Rm1YOUplNjNvQnpkR2hBSWc0bkJYdHkyc2UzbnpPVFd1WDU0cFY0VEI4WmtRZGZtUzRzRzh3YzdwdmhSQ2g5SGtyb2wxTmtTREZtbmhnZmpKazBjR1J3dDFQL243L0g3T1VFb0pqYzBoOTBhWTdyMmgrOUFPZEJhRXE3VHI5ZWo2TDBVL2YySGJINWMzMU1mdFVyaW9jQmlGRWFZeUgrSE85UXcvODhOWFJ2Q2hSTENLSUpPS3dMLzVaMTIwYlZ5eTJlZzVFWWpQNDUvODY4c3BBZWtVaXBIQ1NHSTlDL05jWEJ0OTdidDAxNTlkVjdzMHBnRVljem5vYjJtb2Z2Ymx6WTNzaTYxYUx3L0JOeEJta0N1S3hueDNLRkdReVlrMFI0OGtWMVQ4ODAzZEZaeklac1lMUk93dXcyRWZqd0lqcnp6K1pjdHJpRkNnaC9VTUZxekt0S3pBMlFsbGFuTjUvWS92ZFY2K3hPUjNKVm92RElDVjlQU2R5WWlUdjFUaE1xcWtuMHJCRk02NDhtZkVhNDNZdzlaU0I5c3BhREtadGFQTUhEVmk4SXN5Z0ZLVEdrWnpZMEpwNDlPYk9qZTIxcWJ6SUZXVVZWZzc0aWtSK1BkR1pLWHVOaEFIaEFiWis4ZXJSaXloN2x3ZU1GOTR4Z1B0dmFMdjc2alUybzhOWno2OXdKdFhhL3pLTEhTYkdkWmdnMk5reVEybk01Y1NHN29hSE5wOXphWHZ0YUY3bXBGeXlzZkNxYjJxYTA2L205b2Mwb21PeFQyeHFlK1RtVGtwaEtDczRoUVZSMmg2WWxhcUxIRktqMzRXQkJHR3lHSnN1NnlCSFJpRlZrSDkxeGFveDZWQnZJV1hiZlhHUEtWbmdNVW5EWU9laEJ0ZlVaREc0YVcxREtpOEtubktGTG93L250UkRHYThoYXIrbksxbmU3Z1NiMDZ3ck5TNk1xdFVKTVo0ck9wWWRIeTE2Q2dzbFZoSVNqNDI2RjdVa09odHIzRVVweG5QN1phczhpVDk1K2ZqcHlUNEVwTVpreExwdlUxdExYVGhYVm5JZ0VycWdHbkNCZ0ZUNGhWdTY0bUcrKzBqSzV0U2ZjUU1FUEtWdjZHNTQ0S1oyU2dBUkY5VmtuNGxSRm5kZnMrYk9LMWFWYmlCKzhKUlN5QzJRMXBXS09nK2hNQjdpai8zNWVkbWlnc2xFanpoTUtGMlVpMUdwaVl6THpFeHg4aFNJS3pRU1hPTE1LT1dISitXVThTKytqaEdRUUJPelBQaDY3alB2N2dBRWlHRkd5Y3dCbUJycFFqSVBXNlFaM21KZ3lHRmd5R0ZneUdGZ3lHRmd5R0ZneUdGZ3lHRkFUTXFlbEsva3g0VEEzb2FWZ2c4Z0IxMEpoZ1FkUHNWZGdkSW9sR2FtREljUVFvaEdCQUNiMDlLeUx6LzNwaEVYWjk4S0ltRU1RcHdObm5JMW5xN25VRWppSVY0ZnRkS3VNdlRRaUdHTEtZMUhSOTNTZGt5bFNXUENyckZZa0RNWGVXQ2xrWXlDa1BwelR4L2M5ZnNob0pQNkVxSU92MjlUMjYwWE4yV1hkbUpXSXdsYnJPOWsvcEduRHg0NGx1VWxUVTFTWTJ0ZCtBdTNkRjNRSE10N0FkVnpCRlhzb3pIaTBPMi83UC9XQ3dOU2ExZG9WeWhYcUlKUVV1R0pkUEhCcHc3c0cweUhMYWFYc0hxOFgvZjZ5Tk1IbjM5dFdDTVdQRFZoSmExeDl4dXBCLy85UUs2b0dBMm96RGc0TVI1UDRVdDlvN1VSaXdJd0lBekFmd2doVVllN1FyOThKQjIyS0NJdTJST293K0ZZeWoxd0xGc2Zzd21lTmhFRFFFTHFvL2FSNGZ5Um9VS0lVMXg4WWp3MkI2VVJTNlJEY2VJSVZyRytsWVdseStHUGZ2QTFvS1pZeVJjSUM3SnZoVlpKM3dwV29HOWwwVnhpSjEvM2lBbUNHWkJGRlNGOXk2Vy9pTVY0eW5nbVBSc3hIcXhhY2xpenprbENRanc1dmF5bWI0NEZLc1pUWG1aSWpWSk5ieVZLUVdtY1JZekhiN1V0WXl5Z25PUTRrUzdPTHNhemRuVnNOQ2VtZkhpL3dKZ3o2RzZPRnFXR3BlcEFBSWluc0RIdXROYUZUMlhGbE9ZOEJwREtpeFdKVUhNeVZKeE9laGVSY0Fvak9WSEdLRms1eWZGUzN5ak9mSlV0ZVBxZWE5ZmNjbkZUVVdpTk9QNFFvVEJzMFVjKzBMR2h0VGJuTGVrZ3FkYm9XUFFMdDNSMU44ZGNvZjNKWUw2VmlsSzNOOVI4NmRaemw5VlljcnI1QzRnWXNtanYwY3lKVk5IaTVkRWU1T1Y2cTVCRjl4L05qbVM5a0VXVm5ycHhBaENwTU9id3I5M1JmZkJFVGlOTzdKNUs0N0tJMVpJTVpWeTF4THNUS0lXOHB5NW9qdi93RXhjZEdTcVViaTVTNCtwa2FGbU5OWXVZRlFEWmZTUlZSaFB5Y2wzUUxVYVBwZHdqUTRVTFY4ZHl4V2thYi95T0RLR3dxeWtDWnd5TVN4V2tTYno1NDRmeW51UU0zcmtxV2pvd0Rnang1R3lTUlJTZzRLbmVveGxlUHNsU1dzYUdsTHludi8zclFjWmdwaWduQUFFZ0JVL254NStDcC9PZUVoSU5NeWFQcHlKNVR4VW1XMG5OM04ycE5NWkNiRmZ2ME83RHFVaUlsNnNsblpaeHY0eUgyTE85SjE4WnlNVERYTTJjSTZFdzVRRnppWjFtVGhYQVZDdk55aWVGNUpzdkRESUdaUXlnMGpLR2ZnSEFrL3J4blljTFFsRlk2ckZ3RW1BSGNpekVubnh4c0tjL0ZiR1pLdU1raTJoTnFJejhDRnZzbFlFMEFMei93dVhwZ3FTbS83WENFQXFURWV2bE45S2YvRjV2MkdibFhaRGxKSWRma1JBTnNkOGVTc1hDL01xdXVyd25mWTlpdnNVS2pYbXBpMW9IVCtUdWZuSmZRU3BPYVZXVHczY2dsTUd1M3FFYW0yNXNxNlVBbmtRd0J3dFM1bkcyRkNBZTVpKy9rZjc0ZC9ZZFBlWFcyRnlYTzNWWkFYSVFRb0U0blAxODc1dUgzc3kvdXpOWkg3T1ZScUhHTHpHR0puTmRkUm9Sa1FDQmVKZ3pSci96NHVDOTMrc3RDRjFqTTFXQktpbG9yRXVRaWsxYnlMaXlNZTVzZWRmS0QxMnlZbFZ0U0NPUkNsMnBUTFg1SEtqQktJUXNCa0FLbnRyVk8vU3RGd1ovMTUrSzJNeWZ6RnlSUzFQbHlPR0gvRHlwczY0OFozbk4rcGJFUmEySkMxYkYyaHZDUXFQaHg1L2lNcEJUZWlybi9mNW9kdmVSMGQ2ajJkMkhSeG1GaU1PeGtwVnpsU1hIaEM2ckszUkJLSTBrSHVJTk1WdHBOTno0MDQ1eEZQS2VPcEVxRWlBV2c2akRwOVZrV1dEa21DSzM0eDgrRERIbVVyNFB4T0owSnFrZXNxQlZFeWFDTXpZMzNKZ2pRVlN3dGZtOHFtb2tEWWhwcERZdzVEQXc1REF3NURBdzVEQXdNT1F3TU9Rd01PUXdNT1F3TU9Rd01PUXdNT1F3TU9Rd01PUXdNT1F3TU9Rd0pqQXc1REF3NURBdzVEQXc1REF3NURDb1N2dy8xZmp5T1pzanJDSUFBQUFBU1VWT1JLNUNZSUk9IiwgInNpemVzIjogIjE4MHgxODAiLCAidHlwZSI6ICJpbWFnZS9wbmcifV19">
+<title>Sacred Timeline Case File — MCU Watch Order</title>
+<style>
+  :root {
+    --paper: #f2e8d5;
+    --paper-raised: #ece0c7;
+    --ink: #2a2014;
+    --ink-soft: #5c5138;
+    --rule: #c9b78e;
+    --accent: #c1611c;
+    --accent-ink: #ffffff;
+    --moss: #6b6b3f;
+    --seal-red: #a93226;
+    --gold: #b8860b;
+    --shadow: rgba(42, 32, 20, 0.18);
+    --card-bg: #fbf5e7;
+    --sprocket: #d9c79c;
+    --focus-ring: #2a2014;
+
+    --type-movie: #3e6b99;
+    --type-tv: #7a4c6b;
+    --type-mini: #8e6b3e;
+    --type-special: #4c7a6b;
+    --type-short: #6b7a3e;
+    --type-oneshot: #6b6b6b;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #1b160f;
+      --paper-raised: #241d13;
+      --ink: #ece0c7;
+      --ink-soft: #b8a97e;
+      --rule: #4a3f28;
+      --accent: #e08a42;
+      --accent-ink: #1b160f;
+      --moss: #9a9a5f;
+      --seal-red: #d9584a;
+      --gold: #d4a017;
+      --shadow: rgba(0, 0, 0, 0.45);
+      --card-bg: #221b11;
+      --sprocket: #362c1a;
+      --focus-ring: #e08a42;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1b160f;
+    --paper-raised: #241d13;
+    --ink: #ece0c7;
+    --ink-soft: #b8a97e;
+    --rule: #4a3f28;
+    --accent: #e08a42;
+    --accent-ink: #1b160f;
+    --moss: #9a9a5f;
+    --seal-red: #d9584a;
+    --gold: #d4a017;
+    --shadow: rgba(0, 0, 0, 0.45);
+    --card-bg: #221b11;
+    --sprocket: #362c1a;
+    --focus-ring: #e08a42;
+  }
+  :root[data-theme="light"] {
+    --paper: #f2e8d5;
+    --paper-raised: #ece0c7;
+    --ink: #2a2014;
+    --ink-soft: #5c5138;
+    --rule: #c9b78e;
+    --accent: #c1611c;
+    --accent-ink: #ffffff;
+    --moss: #6b6b3f;
+    --seal-red: #a93226;
+    --gold: #b8860b;
+    --shadow: rgba(42, 32, 20, 0.18);
+    --card-bg: #fbf5e7;
+    --sprocket: #d9c79c;
+    --focus-ring: #2a2014;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.015) 0px, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 3px),
+      var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.45;
+  }
+
+  .mono {
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: max(28px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(80px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  }
+
+  .controls-top { align-items: flex-end; }
+  .field-search { flex: 1 1 240px; }
+  .field-search input { width: 100%; }
+  .filters-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
+  }
+  .filters-btn[aria-expanded="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--seal-red);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  /* ---------- Header / dossier stamp ---------- */
+  .dossier {
+    border: 2px solid var(--ink);
+    background: var(--paper-raised);
+    padding: 20px 24px;
+    position: relative;
+    box-shadow: 4px 4px 0 var(--shadow);
+  }
+  .dossier::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid var(--rule);
+    pointer-events: none;
+  }
+  .agency-line {
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  h1 {
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 10px 0 4px;
+    text-wrap: balance;
+  }
+  .subhead {
+    font-size: 14px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0 0 18px;
+  }
+
+  .stampbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .stamp {
+    border: 1.5px solid currentColor;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: rotate(-1.2deg);
+  }
+  .stamp.countdown { color: var(--seal-red); }
+  .stamp.files { color: var(--moss); }
+
+  /* progress film strip */
+  .filmstrip {
+    margin-top: 18px;
+  }
+  .filmstrip-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  .filmstrip-track {
+    position: relative;
+    height: 22px;
+    background: var(--sprocket);
+    border: 1px solid var(--ink);
+    overflow: hidden;
+  }
+  .filmstrip-fill {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.5s ease;
+  }
+  .filmstrip-ticks {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2px;
+    pointer-events: none;
+  }
+  .filmstrip-ticks span {
+    width: 1px;
+    background: var(--paper);
+    opacity: 0.5;
+    height: 100%;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .field label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  input[type="search"], select {
+    font: inherit;
+    font-size: 13px;
+    background: var(--card-bg);
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    padding: 7px 9px;
+    border-radius: 2px;
+  }
+  input[type="search"] { min-width: 200px; }
+  input[type="search"]:focus, select:focus, button:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+  .chip-toggle {
+    display: flex;
+    border: 1.5px solid var(--ink);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .chip-toggle button {
+    font: inherit;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    background: var(--card-bg);
+    color: var(--ink);
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-right: 1px solid var(--ink);
+  }
+  .chip-toggle button:last-child { border-right: none; }
+  .chip-toggle button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .btn {
+    font: inherit;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1.5px solid var(--ink);
+    padding: 8px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--accent); border-color: var(--accent); }
+  .btn.secondary {
+    background: transparent;
+    color: var(--ink);
+  }
+  .btn.secondary:hover { background: var(--paper-raised); color: var(--ink); }
+  .spacer { flex: 1; }
+  .result-count {
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Legend ---------- */
+  details.legend {
+    margin-top: 16px;
+    border: 1px solid var(--rule);
+    background: var(--paper-raised);
+    padding: 4px 14px;
+  }
+  details.legend summary {
+    cursor: pointer;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 0;
+    color: var(--ink-soft);
+  }
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px 20px;
+    padding: 4px 0 14px;
+    font-size: 12.5px;
+  }
+  .legend-grid .lg-title { font-weight: 700; margin-bottom: 4px; }
+  .swatch {
+    display: inline-block;
+    width: 10px; height: 10px;
+    margin-right: 6px;
+    border: 1px solid var(--ink);
+    vertical-align: middle;
+  }
+
+  /* ---------- Grid ---------- */
+  .grid {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--shadow);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--shadow);
+  }
+  .card.is-watched { opacity: 0.72; }
+
+  .poster {
+    position: relative;
+    height: 258px;
+    background: linear-gradient(135deg, var(--tint, var(--type-movie)), color-mix(in srgb, var(--tint, var(--type-movie)) 55%, black));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .poster:not(.has-img) { height: 108px; }
+  .poster-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+  }
+  .poster-scrim {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 26px 22px -22px rgba(0,0,0,0.55), inset 0 -30px 24px -22px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
+  .poster .sprocket-row {
+    position: absolute;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+  }
+  .poster .sprocket-row.top { top: 5px; }
+  .poster .sprocket-row.bottom { bottom: 5px; }
+  .poster .sprocket-row span {
+    width: 7px; height: 7px;
+    background: var(--card-bg);
+    border-radius: 1px;
+    opacity: 0.85;
+  }
+  .poster .glyph {
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: 30px;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  }
+  .poster .fileno {
+    position: absolute;
+    top: 16px;
+    left: 10px;
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.88);
+    background: rgba(0,0,0,0.28);
+    padding: 2px 5px;
+    border-radius: 2px;
+  }
+  .poster .fmt-tag {
+    position: absolute;
+    top: 16px;
+    right: 10px;
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.88);
+    background: rgba(0,0,0,0.28);
+    padding: 2px 5px;
+    border-radius: 2px;
+  }
+
+  .stamp-btn {
+    position: absolute;
+    bottom: -14px;
+    right: 12px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 2.5px solid var(--seal-red);
+    background: var(--card-bg);
+    color: var(--seal-red);
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.1;
+    transform: rotate(-14deg) scale(1);
+    transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), background 0.15s, color 0.15s;
+    box-shadow: 2px 2px 0 var(--shadow);
+  }
+  .stamp-btn:hover { transform: rotate(-14deg) scale(1.06); }
+  .stamp-btn.stamped {
+    background: var(--seal-red);
+    color: var(--card-bg);
+    transform: rotate(-8deg) scale(1);
+  }
+  .stamp-btn.slam { animation: slam 0.32s ease; }
+  @keyframes slam {
+    0% { transform: rotate(-14deg) scale(1.9); opacity: 0.4; }
+    60% { transform: rotate(-8deg) scale(0.92); opacity: 1; }
+    100% { transform: rotate(-8deg) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stamp-btn, .card { transition: none; }
+    .stamp-btn.slam { animation: none; }
+  }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 760px) {
+    .wrap { padding-left: max(14px, env(safe-area-inset-left)); padding-right: max(14px, env(safe-area-inset-right)); }
+    .dossier { padding: 16px 16px; }
+    h1 { font-size: 22px; }
+    .subhead { font-size: 13px; }
+    .stampbar { gap: 8px; }
+    .stamp { font-size: 10px; padding: 4px 8px; }
+
+    .filters-btn { display: inline-flex; }
+    .filters-panel {
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      margin-top: 0;
+    }
+    .filters-panel.open { display: flex; margin-top: 14px; }
+    .filters-panel.open .field { width: 100%; }
+    .filters-panel.open .spacer { display: none; }
+    .filters-panel.open .chip-toggle { width: 100%; }
+    .filters-panel.open .chip-toggle button { flex: 1; text-align: center; }
+    .filters-panel.open .btn { width: 100%; }
+
+    /* 16px prevents iOS Safari from auto-zooming the page on focus */
+    input[type="search"], select, .btn, .filters-btn { font-size: 16px; padding: 11px 12px; }
+    .chip-toggle button { padding: 11px 12px; font-size: 13px; }
+
+    .card-body { padding: 20px 12px 12px; }
+  }
+
+  .card-body {
+    padding: 20px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .card h3 {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+  .tag {
+    border: 1px solid var(--rule);
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.02em;
+  }
+  .priority-seal {
+    align-self: flex-start;
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1.5px solid var(--seal);
+    color: var(--seal);
+    border-radius: 2px;
+    transform: rotate(-1deg);
+  }
+
+  .gauge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+  }
+  .gauge-label { width: 78px; flex-shrink: 0; letter-spacing: 0.04em; text-transform: uppercase; }
+  .gauge-track {
+    flex: 1;
+    height: 7px;
+    background: var(--sprocket);
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+  .gauge-fill { height: 100%; }
+  .gauge-val { width: 34px; text-align: right; flex-shrink: 0; }
+
+  .rt-row {
+    display: flex;
+    gap: 14px;
+    font-size: 11px;
+  }
+  .rt-row .rt-item { color: var(--ink-soft); }
+  .rt-row b { color: var(--ink); }
+
+  .notes-toggle {
+    margin-top: auto;
+    padding-top: 6px;
+    border-top: 1px dashed var(--rule);
+  }
+  .notes-toggle summary {
+    cursor: pointer;
+    font-size: 11px;
+    color: var(--ink-soft);
+    list-style: none;
+  }
+  .notes-toggle summary::-webkit-details-marker { display: none; }
+  .notes-toggle summary::before { content: "▸ FIELD NOTES"; letter-spacing: 0.06em; }
+  .notes-toggle[open] summary::before { content: "▾ FIELD NOTES"; }
+  .notes-text {
+    font-size: 12px;
+    color: var(--ink);
+    margin: 6px 0 0;
+  }
+
+  .redacted {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--ink);
+    border-radius: 2px;
+    padding: 0 4px;
+    user-select: none;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink-soft);
+  }
+  .empty-state .glyph-big { font-size: 34px; margin-bottom: 10px; }
+
+  footer.endfile {
+    text-align: center;
+    margin-top: 40px;
+    font-family: ui-monospace, "SF Mono", "Courier New", Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="dossier">
+    <div class="agency-line">
+      <span>Temporal Variance Authority · Sacred Timeline Division</span>
+      <span id="today-stamp"></span>
+    </div>
+    <h1>MCU Watch Order — Case File</h1>
+    <p class="subhead">Every branch of the timeline, filed in strict chronological order and cleared for viewing. Stamp a file once watched to keep the record straight before <strong>Avengers: Doomsday</strong> closes the case. — <a href="poster-wall.html" style="color:var(--accent)">⇢ Poster Wall view</a></p>
+    <div class="stampbar">
+      <span class="stamp countdown" id="countdown-stamp">T-MINUS —</span>
+      <span class="stamp files" id="files-stamp">0 / 0 FILES CLEARED</span>
+      <span class="stamp files" id="runtime-stamp">0H WATCHED</span>
+    </div>
+    <div class="filmstrip">
+      <div class="filmstrip-label">
+        <span>Case Progress</span>
+        <span id="progress-pct" class="mono">0%</span>
+      </div>
+      <div class="filmstrip-track">
+        <div class="filmstrip-fill" id="progress-fill"></div>
+        <div class="filmstrip-ticks" id="progress-ticks"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls controls-top">
+    <div class="field field-search">
+      <label for="q">Search Files</label>
+      <input type="search" id="q" placeholder="Title or note…" autocomplete="off" />
+    </div>
+    <button type="button" id="filters-toggle" class="btn secondary filters-btn" aria-expanded="false" aria-controls="filters-panel">
+      Filters<span class="filter-count" id="filter-count" hidden>0</span>
+    </button>
+  </div>
+  <div class="controls filters-panel" id="filters-panel">
+    <div class="field">
+      <label for="f-type">Type</label>
+      <select id="f-type"></select>
+    </div>
+    <div class="field">
+      <label for="f-format">Format</label>
+      <select id="f-format"></select>
+    </div>
+    <div class="field">
+      <label for="f-priority">Priority</label>
+      <select id="f-priority"></select>
+    </div>
+    <div class="field">
+      <label for="f-sort">Sort</label>
+      <select id="f-sort">
+        <option value="chrono">Chronological (default)</option>
+        <option value="doomsday">Doomsday Link %</option>
+        <option value="rt">RT Critics %</option>
+        <option value="priority">Priority</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <div class="chip-toggle" id="watch-toggle" role="group" aria-label="Filter by watched status">
+        <button type="button" data-val="all" aria-pressed="true">All</button>
+        <button type="button" data-val="unwatched" aria-pressed="false">Unwatched</button>
+        <button type="button" data-val="watched" aria-pressed="false">Cleared</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>&nbsp;</label>
+      <button class="btn secondary" id="btn-random">🎲 Pull Random File</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="field">
+      <label>&nbsp;</label>
+      <button class="btn secondary" id="btn-reset">Reset Filters</button>
+    </div>
+  </div>
+
+  <details class="legend">
+    <summary>Legend &amp; Field Guide</summary>
+    <div class="legend-grid">
+      <div>
+        <div class="lg-title">Priority Seal</div>
+        <div><span class="swatch" style="background:var(--seal-red)"></span>Essential — core Doomsday throughline</div>
+        <div><span class="swatch" style="background:var(--accent)"></span>Recommended — adds real context</div>
+        <div><span class="swatch" style="background:var(--moss)"></span>Completionist — optional, low urgency</div>
+      </div>
+      <div>
+        <div class="lg-title">Doomsday Link %</div>
+        <div>How directly a file's events feed into <em>Avengers: Doomsday</em>. Higher = harder to skip.</div>
+      </div>
+      <div>
+        <div class="lg-title">File Type Tabs</div>
+        <div><span class="swatch" style="background:var(--type-movie)"></span>Movie &nbsp; <span class="swatch" style="background:var(--type-tv)"></span>TV Series</div>
+        <div><span class="swatch" style="background:var(--type-mini)"></span>Mini-Series &nbsp; <span class="swatch" style="background:var(--type-special)"></span>Special</div>
+        <div><span class="swatch" style="background:var(--type-short)"></span>Animated Short &nbsp; <span class="swatch" style="background:var(--type-oneshot)"></span>One-Shot</div>
+      </div>
+      <div>
+        <div class="lg-title">Redacted Fields</div>
+        <div>Unconfirmed data (unreleased files) is marked <span class="redacted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> until officially declassified.</div>
+      </div>
+    </div>
+  </details>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty-state" id="empty-state" hidden>
+    <div class="glyph-big">🗂️</div>
+    <div>No files match this query. The timeline may be sacred, but your filters are too strict.</div>
+  </div>
+
+  <footer class="endfile">— End of File · For The Timeline —</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // [id, title, type, format, setIn, runtimeMin, postCredits, priority, doomsday, rtCritics, rtAudience, notes]
+  const RAW = [
+    [1,"Eyes of Wakanda S1","TV Series","Animated","Ancient Wakandan history",120,"No","Completionist",10,92,51,"Animated anthology; optional but short"],
+    [2,"Captain America: The First Avenger","Movie","Live Action","1942–1945",124,"1 End","Recommended",20,80,78,"Steve Rogers, Hydra, Tesseract"],
+    [3,"Marvel One-Shot: Agent Carter","One-Shot","Live Action","1946",15,"No","Completionist",5,null,null,"Short one-shot on Disney+"],
+    [4,"Captain Marvel","Movie","Live Action","1995",123,"Mid + End","Recommended",20,79,45,"Cosmic MCU and Skrull/Kree context"],
+    [5,"Iron Man","Movie","Live Action","2010",126,"1 End","Recommended",15,94,91,"Start of the MCU"],
+    [6,"Iron Man 2","Movie","Live Action","2011",124,"1 End","Recommended",15,72,71,"SHIELD and Avengers Initiative setup"],
+    [7,"The Incredible Hulk","Movie","Live Action","2011",112,"1 End","Recommended",20,68,71,"Hulk and super-soldier threads"],
+    [8,"Marvel One-Shot: A Funny Thing Happened on the Way to Thor's Hammer","One-Shot","Live Action","2011",4,"No","Completionist",2,null,null,"Agent Coulson short"],
+    [9,"Thor","Movie","Live Action","2011",115,"1 End","Recommended",20,77,76,"Thor, Loki, Asgard, cosmic mythology"],
+    [10,"Marvel One-Shot: The Consultant","One-Shot","Live Action","2011",4,"No","Completionist",2,null,null,"Coulson and Sitwell short"],
+    [11,"The Avengers","Movie","Live Action","2012",143,"Mid + End","Essential",50,91,91,"Original team assembled"],
+    [12,"Marvel One-Shot: Item 47","One-Shot","Live Action","2012",12,"No","Completionist",2,null,null,"Post-Avengers SHIELD short"],
+    [13,"Thor: The Dark World","Movie","Live Action","2013",112,"Mid + End","Completionist",15,67,75,"Reality Stone and cosmic lore"],
+    [14,"Iron Man 3","Movie","Live Action","Late 2012",130,"Mid + End","Completionist",10,79,78,"Tony's post-Avengers aftermath"],
+    [15,"Marvel One-Shot: All Hail the King","One-Shot","Live Action","2013",14,"No","Completionist",5,null,null,"Mandarin follow-up short"],
+    [16,"Captain America: The Winter Soldier","Movie","Live Action","2014",136,"Mid + End","Recommended",30,90,92,"SHIELD collapse, Hydra, Bucky"],
+    [17,"Guardians of the Galaxy","Movie","Live Action","2014",122,"Mid + End","Recommended",20,91,92,"Cosmic MCU and Infinity Stone context"],
+    [18,"I Am Groot S1","Animated Short","Animated","c. 2014",20,"No","Completionist",5,89,75,"Fun shorts; very low Doomsday relevance"],
+    [19,"I Am Groot S2","Animated Short","Animated","c. 2014",20,"No","Completionist",5,89,75,"Fun shorts; very low Doomsday relevance"],
+    [20,"Guardians of the Galaxy Vol. 2","Movie","Live Action","2014",136,"5 Scenes","Completionist",15,85,87,"Guardians team dynamics"],
+    [21,"Daredevil S1","TV Series","Live Action","2014–2015",600,"No","Recommended",35,99,93,"Matt Murdock origin; street-level MCU"],
+    [22,"Jessica Jones S1","TV Series","Live Action","2015",600,"No","Completionist",10,94,87,"Strong standalone character story"],
+    [23,"Avengers: Age of Ultron","Movie","Live Action","2015",141,"1 Mid","Essential",40,75,83,"Vision, Wanda, Avengers dynamics"],
+    [24,"Ant-Man","Movie","Live Action","2015",117,"Mid + End","Recommended",25,83,86,"Pym tech and Quantum Realm intro"],
+    [25,"Daredevil S2","TV Series","Live Action","2015",600,"No","Recommended",35,81,89,"Expands Daredevil; introduces Punisher"],
+    [26,"Luke Cage S1","TV Series","Live Action","2015–2016",600,"No","Completionist",10,90,69,"Street-level MCU"],
+    [27,"Iron Fist S1","TV Series","Live Action","2016",600,"No","Completionist",10,20,71,"Necessary mainly for The Defenders"],
+    [28,"The Defenders","Mini-Series","Live Action","2016",390,"No","Recommended",30,78,70,"Netflix heroes team-up"],
+    [29,"Captain America: Civil War","Movie","Live Action","2016",147,"Mid + End","Essential",45,90,89,"Fractured Avengers; Spider-Man intro"],
+    [30,"Your Friendly Neighborhood Spider-Man S1","TV Series","Animated","2016",270,"No","Completionist",15,97,62,"Animated alternate Peter Parker origin"],
+    [31,"Black Widow","Movie","Live Action","2016 (opening 1995)",134,"Mid + End","Recommended",25,79,78,"Yelena; key for Thunderbolts*"],
+    [32,"Black Panther","Movie","Live Action","2016",134,"Mid + End","Recommended",30,96,79,"Wakanda's place in the MCU"],
+    [33,"Spider-Man: Homecoming","Movie","Live Action","2016",133,"Mid + End","Recommended",25,92,87,"MCU Peter Parker's starting point"],
+    [34,"The Punisher S1","TV Series","Live Action","2016",600,"No","Completionist",15,68,88,"Frank Castle setup"],
+    [35,"Doctor Strange","Movie","Live Action","2016–2017",115,"Mid + End","Recommended",40,89,86,"Mystic arts and alternate dimensions"],
+    [36,"Jessica Jones S2","TV Series","Live Action","2017",600,"No","Completionist",10,82,67,"Optional completionist entry"],
+    [37,"Luke Cage S2","TV Series","Live Action","2017",600,"No","Completionist",10,86,67,"Optional completionist entry"],
+    [38,"Iron Fist S2","TV Series","Live Action","2017",480,"No","Completionist",10,56,60,"Optional completionist entry"],
+    [39,"Daredevil S3","TV Series","Live Action","2017",600,"No","Recommended",40,97,87,"Recommended before Daredevil: Born Again"],
+    [40,"Thor: Ragnarok","Movie","Live Action","2017",130,"Mid + End","Recommended",25,93,87,"Thor's status quo entering Infinity War era"],
+    [41,"The Punisher S2","TV Series","Live Action","2018",600,"No","Completionist",15,61,70,"Optional unless you want full Frank Castle context"],
+    [42,"Jessica Jones S3","TV Series","Live Action","2018",600,"No","Completionist",10,73,76,"Optional completionist entry"],
+    [43,"Ant-Man and the Wasp","Movie","Live Action","2018",118,"Mid + End","Recommended",30,87,82,"Quantum Realm groundwork"],
+    [44,"Avengers: Infinity War","Movie","Live Action","2018",149,"1 End","Essential",55,85,91,"Largest crossover crisis before Multiverse Saga"],
+    [45,"Avengers: Endgame","Movie","Live Action","2018 and 2023",181,"Stay through credits","Essential",70,94,90,"Post-Blip MCU status quo; changed Avengers landscape"],
+    [46,"Loki S1","TV Series","Live Action","Starts 2012; outside linear time",300,"No","Essential",95,92,90,"Essential multiverse/TVA material"],
+    [47,"What If…? S1","TV Series","Animated","Multiple alternate timelines",240,"Some episode tags","Completionist",35,89,91,"Multiversal possibilities"],
+    [48,"Marvel Zombies","Mini-Series","Animated","Alternate timeline",120,"Verify per episode","Completionist",25,66,67,"Alternate-universe; optional"],
+    [49,"WandaVision","Mini-Series","Live Action","2023",360,"No","Essential",55,92,88,"Wanda, Vision, major mystical setup"],
+    [50,"Shang-Chi and the Legend of the Ten Rings","Movie","Live Action","2024",132,"Mid + End","Recommended",30,92,98,"New hero and unexplained cosmic signal"],
+    [51,"The Falcon and the Winter Soldier","Mini-Series","Live Action","2024",300,"No","Essential",60,85,80,"Essential context for Sam Wilson before Brave New World"],
+    [52,"Spider-Man: Far From Home","Movie","Live Action","2024",129,"Mid + End","Recommended",35,91,95,"Post-Endgame world; Peter's public status"],
+    [53,"Eternals","Movie","Live Action","2024 (ancient flashbacks)",156,"Mid + End","Recommended",25,48,80,"Celestial-scale consequences on Earth"],
+    [54,"Spider-Man: No Way Home","Movie","Live Action","2024",148,"Mid + End","Essential",75,93,98,"Multiverse crossover mechanics; Peter's reset"],
+    [55,"Doctor Strange in the Multiverse of Madness","Movie","Live Action","2025",126,"Mid + End","Essential",85,73,86,"Incursions, alternate universes, multiversal stakes"],
+    [56,"Hawkeye","Mini-Series","Live Action","Christmas 2024",300,"1 Finale tag","Recommended",30,92,88,"Kate Bishop, Kingpin, Echo setup"],
+    [57,"Moon Knight","Mini-Series","Live Action","c. 2025",300,"1 Finale tag","Completionist",15,86,88,"Largely self-contained for now"],
+    [58,"Black Panther: Wakanda Forever","Movie","Live Action","2025",161,"Mid + End","Recommended",45,84,87,"Wakanda's new leadership and global position"],
+    [59,"Echo","Mini-Series","Live Action","c. 2025",240,"No","Recommended",35,71,57,"Kingpin/Maya follow-up; helpful for Daredevil-adjacent material"],
+    [60,"She-Hulk: Attorney at Law","TV Series","Live Action","c. 2025",270,"1 Finale tag","Completionist",25,80,32,"Hulk-world developments; Matt Murdock appearance"],
+    [61,"Ms. Marvel","Mini-Series","Live Action","c. 2025",270,"1 Finale tag","Recommended",25,98,80,"Kamala Khan before The Marvels"],
+    [62,"Thor: Love and Thunder","Movie","Live Action","c. 2025",119,"Mid + End","Completionist",15,64,77,"Thor's current personal direction"],
+    [63,"Ironheart","Mini-Series","Live Action","c. 2025–2026",300,"Verify per episode","Recommended",30,76,46,"New young hero; technology/mysticism threads"],
+    [64,"Werewolf by Night","Special","Live Action","Modern MCU",53,"No","Completionist",10,90,83,"Great standalone special; low direct relevance"],
+    [65,"The Guardians of the Galaxy Holiday Special","Special","Live Action","Christmas c. 2025",44,"No","Completionist",15,95,86,"Small but meaningful lead-in to Guardians Vol. 3"],
+    [66,"Ant-Man and the Wasp: Quantumania","Movie","Live Action","c. 2026",124,"Mid + End","Essential",55,46,83,"Quantum Realm and major multiverse-era antagonist thread"],
+    [67,"Guardians of the Galaxy Vol. 3","Movie","Live Action","c. 2026",150,"Mid + End","Recommended",20,82,94,"Updated Guardians roster; emotional finale"],
+    [68,"Secret Invasion","Mini-Series","Live Action","c. 2026",270,"1 Finale tag","Completionist",20,53,43,"Nick Fury and Skrull invasion"],
+    [69,"The Marvels","Movie","Live Action","c. 2026",105,"Mid + End","Recommended",35,63,83,"Captain Marvel, Monica Rambeau, multiversal development"],
+    [70,"Loki S2","TV Series","Live Action","Outside linear time",330,"No","Essential",95,82,83,"Essential TVA and multiverse status quo"],
+    [71,"What If…? S2","TV Series","Animated","Multiple alternate timelines",240,"No","Completionist",35,88,62,"Optional multiverse expansion"],
+    [72,"Deadpool & Wolverine","Movie","Live Action","2024 / multiversal",128,"1 End","Essential",90,77,83,"TVA, legacy universes, multiverse scope"],
+    [73,"Agatha All Along","Mini-Series","Live Action","c. 2026",360,"No","Essential",55,84,82,"Strongly recommended after WandaVision"],
+    [74,"What If…? S3","TV Series","Animated","Multiple alternate timelines",240,"No","Completionist",35,80,33,"Optional; multiverse-focused finale season"],
+    [75,"Daredevil: Born Again S1","TV Series","Live Action","c. 2026",420,"No","Essential",55,87,79,"Current Daredevil/Kingpin status quo"],
+    [76,"Captain America: Brave New World","Movie","Live Action","c. 2026",118,"1 Mid","Essential",60,46,83,"Current Earth politics; new Captain America"],
+    [77,"Thunderbolts*","Movie","Live Action","c. 2027",126,"Mid + End","Essential",90,88,87,"Highly relevant team going forward"],
+    [78,"The Fantastic Four: First Steps","Movie","Live Action","Alternate retro-futurist 1960s",115,"Mid + End","Essential",100,86,90,"Direct Doomsday territory; do not skip"],
+    [79,"Wonder Man S1","TV Series","Live Action","Modern MCU c. 2026–2027",300,"Verify per episode","Completionist",20,91,87,"Current MCU character-world expansion"],
+    [80,"Daredevil: Born Again S2","TV Series","Live Action","After S1",360,"Verify per episode","Recommended",55,86,86,"Continue before Doomsday if available"],
+    [81,"The Punisher: One Last Kill","TV Series","Live Action","Unconfirmed",300,"Unconfirmed","Recommended",45,73,null,"Street-level context; watch if available"],
+    [82,"Spider-Man: Brand New Day","Movie","Live Action","c. 2028",128,"Verify when you watch","Essential",70,90,null,"Watch last before Doomsday; positioned directly before it"],
+    [83,"Avengers: Doomsday","Movie","Live Action","Unconfirmed",null,"Unconfirmed",null,null,null,null,"The destination — December 18, 2026 release"]
+  ];
+
+  const FIELDS = ["id","title","type","format","setIn","runtime","postCredits","priority","doomsday","rtCritics","rtAudience","notes"];
+  const MOVIES = RAW.map(row => {
+    const o = {};
+    FIELDS.forEach((f, i) => o[f] = row[i]);
+    return o;
+  });
+
+  // Official poster art, sourced from Wikipedia/Wikimedia film & series infobox images.
+  const POSTER_FILES = {
+    1: "images/001.jpg",
+    2: "images/002.jpg",
+    3: "images/003.jpg",
+    4: "images/004.jpg",
+    5: "images/005.jpg",
+    6: "images/006.jpg",
+    7: "images/007.jpg",
+    8: "images/008.png",
+    9: "images/009.jpg",
+    10: null,
+    11: "images/011.jpg",
+    12: "images/012.jpg",
+    13: "images/013.jpg",
+    14: "images/014.jpg",
+    15: "images/015.jpg",
+    16: "images/016.jpg",
+    17: "images/017.jpg",
+    18: "images/018.jpg",
+    19: "images/019.jpg",
+    20: "images/020.jpg",
+    21: "images/021.jpg",
+    22: "images/022.jpg",
+    23: "images/023.jpg",
+    24: "images/024.jpg",
+    25: "images/025.jpg",
+    26: "images/026.png",
+    27: "images/027.png",
+    28: "images/028.jpg",
+    29: "images/029.jpg",
+    30: "images/030.png",
+    31: "images/031.jpg",
+    32: "images/032.jpg",
+    33: "images/033.jpg",
+    34: "images/034.jpg",
+    35: "images/035.jpg",
+    36: "images/036.jpg",
+    37: "images/037.png",
+    38: "images/038.png",
+    39: "images/039.jpg",
+    40: "images/040.jpg",
+    41: "images/041.jpg",
+    42: "images/042.jpg",
+    43: "images/043.jpg",
+    44: "images/044.jpg",
+    45: "images/045.jpg",
+    46: "images/046.png",
+    47: "images/047.png",
+    48: "images/048.png",
+    49: "images/049.png",
+    50: "images/050.jpg",
+    51: "images/051.png",
+    52: "images/052.jpg",
+    53: "images/053.jpg",
+    54: "images/054.jpg",
+    55: "images/055.jpg",
+    56: "images/056.png",
+    57: "images/057.jpg",
+    58: "images/058.jpg",
+    59: "images/059.jpg",
+    60: "images/060.jpg",
+    61: "images/061.jpg",
+    62: "images/062.jpg",
+    63: "images/063.png",
+    64: "images/064.jpg",
+    65: "images/065.jpg",
+    66: "images/066.jpg",
+    67: "images/067.jpg",
+    68: "images/068.jpg",
+    69: "images/069.jpg",
+    70: "images/070.jpg",
+    71: "images/071.png",
+    72: "images/072.jpg",
+    73: "images/073.jpg",
+    74: "images/074.png",
+    75: "images/075.jpg",
+    76: "images/076.jpg",
+    77: "images/077.jpg",
+    78: "images/078.jpg",
+    79: null,
+    80: "images/080.jpg",
+    81: "images/081.jpg",
+    82: "images/082.jpg",
+    83: "images/083.jpg",
+  };
+
+  const TYPE_GLYPH = {
+    "Movie": "▶", "TV Series": "▦", "Mini-Series": "▥",
+    "Special": "✦", "Animated Short": "◈", "One-Shot": "▪"
+  };
+  const TYPE_VAR = {
+    "Movie": "--type-movie", "TV Series": "--type-tv", "Mini-Series": "--type-mini",
+    "Special": "--type-special", "Animated Short": "--type-short", "One-Shot": "--type-oneshot"
+  };
+  const PRIORITY_VAR = {
+    "Essential": "--seal-red", "Recommended": "--accent", "Completionist": "--moss"
+  };
+
+  const STORE_KEY = "tva-sacred-timeline-watchlist-v1";
+  function loadWatched() {
+    try { return new Set(JSON.parse(localStorage.getItem(STORE_KEY)) || []); }
+    catch (e) { return new Set(); }
+  }
+  function saveWatched(set) {
+    localStorage.setItem(STORE_KEY, JSON.stringify([...set]));
+  }
+  let watched = loadWatched();
+
+  function readableRuntime(min) {
+    if (min == null) return "—";
+    if (min < 60) return min + "m";
+    if (min < 1440) {
+      const h = Math.floor(min / 60), m = min % 60;
+      return h + "h" + (m ? " " + m + "m" : "");
+    }
+    const d = Math.floor(min / 1440), rem = min % 1440;
+    const h = Math.floor(rem / 60), m = rem % 60;
+    let out = d + "d";
+    if (h) out += " " + h + "h";
+    if (m) out += " " + m + "m";
+    return out;
+  }
+
+  function doomsdayColor(pct) {
+    if (pct == null) return "var(--ink-soft)";
+    if (pct >= 80) return "var(--seal-red)";
+    if (pct >= 50) return "var(--accent)";
+    if (pct >= 20) return "var(--gold)";
+    return "var(--moss)";
+  }
+
+  function redacted() {
+    return '<span class="redacted" aria-label="classified">redacted</span>';
+  }
+
+  function cardHTML(m) {
+    const typeVar = TYPE_VAR[m.type] || "--type-movie";
+    const glyph = TYPE_GLYPH[m.type] || "▶";
+    const isWatched = watched.has(m.id);
+    const priorityVar = m.priority ? PRIORITY_VAR[m.priority] : null;
+    const priorityHTML = m.priority
+      ? `<span class="priority-seal" style="--seal:var(${priorityVar})">${m.priority}</span>`
+      : `<span class="priority-seal" style="--seal:var(--ink-soft)">${redacted()}</span>`;
+    const doomsdayHTML = m.doomsday != null
+      ? `<div class="gauge-fill" style="width:${m.doomsday}%; background:${doomsdayColor(m.doomsday)}"></div>`
+      : `<div class="gauge-fill" style="width:100%; background:var(--rule)"></div>`;
+    const doomsdayVal = m.doomsday != null ? m.doomsday + "%" : "—";
+    const rtCritics = m.rtCritics != null ? m.rtCritics + "%" : "—";
+    const rtAudience = m.rtAudience != null ? m.rtAudience + "%" : "—";
+
+    const posterFile = POSTER_FILES[m.id];
+    const posterImgHTML = posterFile
+      ? `<img class="poster-img" src="${posterFile}" alt="${escapeHTML(m.title)} poster" loading="lazy">
+         <div class="poster-scrim"></div>`
+      : `<span class="glyph" aria-hidden="true">${glyph}</span>`;
+
+    return `
+    <article class="card${isWatched ? " is-watched" : ""}" data-id="${m.id}">
+      <div class="poster${posterFile ? " has-img" : ""}" style="--tint:var(${typeVar})">
+        ${posterImgHTML}
+        <span class="fileno mono">FILE №${String(m.id).padStart(3,"0")}</span>
+        <span class="fmt-tag">${m.format}</span>
+        <div class="sprocket-row top">${"<span></span>".repeat(8)}</div>
+        <div class="sprocket-row bottom">${"<span></span>".repeat(8)}</div>
+        <button type="button" class="stamp-btn${isWatched ? " stamped" : ""}" data-action="toggle" aria-pressed="${isWatched}">
+          ${isWatched ? "CLEARED" : "MARK<br/>CLEARED"}
+        </button>
+      </div>
+      <div class="card-body">
+        <h3>${escapeHTML(m.title)}</h3>
+        <div class="meta-row">
+          <span class="tag">${m.type}</span>
+          <span class="tag">${escapeHTML(m.setIn)}</span>
+          <span class="tag mono">${readableRuntime(m.runtime)}</span>
+        </div>
+        ${priorityHTML}
+        <div class="gauge-row">
+          <span class="gauge-label">Doomsday Link</span>
+          <div class="gauge-track">${doomsdayHTML}</div>
+          <span class="gauge-val mono">${doomsdayVal}</span>
+        </div>
+        <div class="rt-row">
+          <span class="rt-item">RT Critics <b class="mono">${rtCritics}</b></span>
+          <span class="rt-item">Audience <b class="mono">${rtAudience}</b></span>
+        </div>
+        <details class="notes-toggle">
+          <summary></summary>
+          <p class="notes-text">${escapeHTML(m.notes)}<br><span class="mono" style="color:var(--ink-soft)">Post-credits: ${escapeHTML(m.postCredits)}</span></p>
+        </details>
+      </div>
+    </article>`;
+  }
+
+  function escapeHTML(s) {
+    if (s == null) return "";
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  // ---------- filter state ----------
+  const state = { q: "", type: "all", format: "all", priority: "all", watch: "all", sort: "chrono" };
+
+  function populateSelect(id, values, allLabel) {
+    const el = document.getElementById(id);
+    el.innerHTML = `<option value="all">${allLabel}</option>` +
+      values.map(v => `<option value="${v}">${v}</option>`).join("");
+  }
+  populateSelect("f-type", [...new Set(MOVIES.map(m => m.type))], "All Types");
+  populateSelect("f-format", [...new Set(MOVIES.map(m => m.format))], "All Formats");
+  populateSelect("f-priority", ["Essential","Recommended","Completionist"], "All Priorities");
+
+  function applyFilters() {
+    let list = MOVIES.filter(m => {
+      if (state.type !== "all" && m.type !== state.type) return false;
+      if (state.format !== "all" && m.format !== state.format) return false;
+      if (state.priority !== "all" && m.priority !== state.priority) return false;
+      if (state.watch === "watched" && !watched.has(m.id)) return false;
+      if (state.watch === "unwatched" && watched.has(m.id)) return false;
+      if (state.q) {
+        const hay = (m.title + " " + m.notes).toLowerCase();
+        if (!hay.includes(state.q)) return false;
+      }
+      return true;
+    });
+
+    if (state.sort === "doomsday") list = list.slice().sort((a,b) => (b.doomsday ?? -1) - (a.doomsday ?? -1));
+    else if (state.sort === "rt") list = list.slice().sort((a,b) => (b.rtCritics ?? -1) - (a.rtCritics ?? -1));
+    else if (state.sort === "priority") {
+      const rank = { "Essential": 0, "Recommended": 1, "Completionist": 2 };
+      list = list.slice().sort((a,b) => (rank[a.priority] ?? 3) - (rank[b.priority] ?? 3) || a.id - b.id);
+    }
+    return list;
+  }
+
+  const grid = document.getElementById("grid");
+  const emptyState = document.getElementById("empty-state");
+  const resultCountHolder = document.querySelector(".controls .spacer");
+
+  function render() {
+    const list = applyFilters();
+    grid.innerHTML = list.map(cardHTML).join("");
+    emptyState.hidden = list.length !== 0;
+    updateStats();
+  }
+
+  function updateStats() {
+    const total = MOVIES.length;
+    const clearedCount = MOVIES.filter(m => watched.has(m.id)).length;
+    document.getElementById("files-stamp").textContent = `${clearedCount} / ${total} FILES CLEARED`;
+
+    const pct = Math.round((clearedCount / total) * 100);
+    document.getElementById("progress-pct").textContent = pct + "%";
+    document.getElementById("progress-fill").style.width = pct + "%";
+
+    const watchedMinutes = MOVIES.filter(m => watched.has(m.id) && m.runtime).reduce((s,m) => s + m.runtime, 0);
+    const totalKnownMinutes = MOVIES.filter(m => m.runtime).reduce((s,m) => s + m.runtime, 0);
+    document.getElementById("runtime-stamp").textContent =
+      `${readableRuntime(watchedMinutes).toUpperCase()} / ${readableRuntime(totalKnownMinutes).toUpperCase()} WATCHED`;
+
+    const count = (state.type !== "all" ? 1 : 0) + (state.format !== "all" ? 1 : 0) +
+      (state.priority !== "all" ? 1 : 0) + (state.watch !== "all" ? 1 : 0);
+    const badge = document.getElementById("filter-count");
+    badge.textContent = count;
+    badge.hidden = count === 0;
+  }
+
+  function renderTicks() {
+    const ticksEl = document.getElementById("progress-ticks");
+    ticksEl.innerHTML = Array.from({length: 20}).map(() => "<span></span>").join("");
+  }
+
+  function updateCountdown() {
+    const target = new Date("2026-12-18T00:00:00");
+    const now = new Date();
+    const diffDays = Math.ceil((target - now) / 86400000);
+    const el = document.getElementById("countdown-stamp");
+    el.textContent = diffDays > 0
+      ? `T-MINUS ${diffDays}D TO DOOMSDAY`
+      : "CASE FILE CLOSED";
+  }
+
+  function updateTodayStamp() {
+    const now = new Date();
+    document.getElementById("today-stamp").textContent =
+      "Filed " + now.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+  }
+
+  // ---------- events ----------
+  document.getElementById("filters-toggle").addEventListener("click", () => {
+    const panel = document.getElementById("filters-panel");
+    const btn = document.getElementById("filters-toggle");
+    const nowOpen = !panel.classList.contains("open");
+    panel.classList.toggle("open", nowOpen);
+    btn.setAttribute("aria-expanded", nowOpen);
+  });
+
+  document.getElementById("q").addEventListener("input", e => {
+    state.q = e.target.value.trim().toLowerCase();
+    render();
+  });
+  document.getElementById("f-type").addEventListener("change", e => { state.type = e.target.value; render(); });
+  document.getElementById("f-format").addEventListener("change", e => { state.format = e.target.value; render(); });
+  document.getElementById("f-priority").addEventListener("change", e => { state.priority = e.target.value; render(); });
+  document.getElementById("f-sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+
+  document.getElementById("watch-toggle").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-val]");
+    if (!btn) return;
+    state.watch = btn.dataset.val;
+    [...btn.parentElement.children].forEach(b => b.setAttribute("aria-pressed", b === btn));
+    render();
+  });
+
+  document.getElementById("btn-reset").addEventListener("click", () => {
+    state.q = "all"; state.q = ""; state.type = "all"; state.format = "all";
+    state.priority = "all"; state.watch = "all"; state.sort = "chrono";
+    document.getElementById("q").value = "";
+    document.getElementById("f-type").value = "all";
+    document.getElementById("f-format").value = "all";
+    document.getElementById("f-priority").value = "all";
+    document.getElementById("f-sort").value = "chrono";
+    [...document.getElementById("watch-toggle").children].forEach(b => b.setAttribute("aria-pressed", b.dataset.val === "all"));
+    render();
+  });
+
+  document.getElementById("btn-random").addEventListener("click", () => {
+    const pool = MOVIES.filter(m => !watched.has(m.id));
+    if (!pool.length) return;
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    state.q = ""; state.type = "all"; state.format = "all"; state.priority = "all"; state.watch = "all"; state.sort = "chrono";
+    document.getElementById("q").value = "";
+    document.getElementById("f-type").value = "all";
+    document.getElementById("f-format").value = "all";
+    document.getElementById("f-priority").value = "all";
+    document.getElementById("f-sort").value = "chrono";
+    [...document.getElementById("watch-toggle").children].forEach(b => b.setAttribute("aria-pressed", b.dataset.val === "all"));
+    render();
+    requestAnimationFrame(() => {
+      const el = grid.querySelector(`.card[data-id="${pick.id}"]`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.style.outline = "3px solid var(--accent)";
+        el.style.outlineOffset = "3px";
+        setTimeout(() => { el.style.outline = ""; el.style.outlineOffset = ""; }, 1600);
+      }
+    });
+  });
+
+  grid.addEventListener("click", e => {
+    const btn = e.target.closest(".stamp-btn");
+    if (!btn) return;
+    const card = btn.closest(".card");
+    const id = Number(card.dataset.id);
+    if (watched.has(id)) watched.delete(id); else watched.add(id);
+    saveWatched(watched);
+    const nowWatched = watched.has(id);
+    card.classList.toggle("is-watched", nowWatched);
+    btn.classList.toggle("stamped", nowWatched);
+    btn.setAttribute("aria-pressed", nowWatched);
+    btn.innerHTML = nowWatched ? "CLEARED" : "MARK<br/>CLEARED";
+    btn.classList.remove("slam");
+    void btn.offsetWidth;
+    btn.classList.add("slam");
+    if (state.watch !== "all") {
+      setTimeout(render, 220);
+    } else {
+      updateStats();
+    }
+  });
+
+  renderTicks();
+  updateTodayStamp();
+  updateCountdown();
+  render();
+  setInterval(updateCountdown, 60 * 60 * 1000);
+})();
+</script>
+</body>
+</html>
