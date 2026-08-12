@@ -1,0 +1,22 @@
+[
+  {
+    "version": "1.1.0",
+    "date": "2026-08-12",
+    "changes": [
+      "Filters (type, priority, watched status, sort, search) now persist between visits.",
+      "Type filter simplified to Movies / TV Series / Specials, and now supports picking several at once.",
+      "On mobile, the filters panel now floats over the poster grid instead of pushing it down.",
+      "Unified sizing and behavior across all filter controls.",
+      "Reclaimed wasted space in the search bar and toolbar.",
+      "Fixed an iOS Safari bug where the top bar could be hidden until you scrolled.",
+      "Added this changelog — you'll see what's new here whenever a new version ships."
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "date": "2026-08-07",
+    "changes": [
+      "Initial release: poster grid and table view, search, filters, sort, and per-device watched-progress tracking."
+    ]
+  }
+]

@@ -77,8 +77,17 @@
   }
 
   * { box-sizing: border-box; }
+  html {
+    height: 100%;
+    /* Stops iOS Safari's rubber-band overscroll from leaving the page
+       scrolled past the top on load, which hid the sticky header until
+       the user dragged the page down manually. */
+    overscroll-behavior-y: none;
+  }
   body {
     margin: 0;
+    min-height: 100%;
+    overscroll-behavior-y: none;
     background: var(--bg);
     color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -103,20 +112,25 @@
     flex-wrap: wrap;
   }
   .bar-top { flex-wrap: nowrap; }
-  .bar-top .title-block { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .bar-top .title-block { flex: 0 1 auto; min-width: 0; overflow: hidden; }
   .bar-top .title-block h1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .bar-top #q { flex: 1 1 auto; min-width: 0; }
+  .bar-top #q { flex: 1 1 240px; min-width: 0; }
+
+  /* Search input, selects, and every filter-row button share one height/shape. */
+  input[type="search"], select, .filters-btn, .seg button {
+    font: inherit;
+    font-size: 13px;
+    min-height: 36px;
+  }
 
   .filters-btn {
     display: none;
     align-items: center;
     gap: 6px;
-    font: inherit;
-    font-size: 13px;
     background: var(--bg-raised);
     color: var(--ink);
     border: 1px solid var(--border);
-    padding: 9px 12px;
+    padding: 0 12px;
     border-radius: 7px;
     cursor: pointer;
     white-space: nowrap;
@@ -154,12 +168,10 @@
   .view-link:hover { color: var(--accent); border-color: var(--accent); }
 
   input[type="search"], select {
-    font: inherit;
-    font-size: 13px;
     background: var(--bg-raised);
     color: var(--ink);
     border: 1px solid var(--border);
-    padding: 7px 10px;
+    padding: 0 12px;
     border-radius: 7px;
   }
   input[type="search"] { width: 190px; }
@@ -170,17 +182,16 @@
 
   .seg {
     display: flex;
+    min-height: 36px;
     border: 1px solid var(--border);
     border-radius: 7px;
     overflow: hidden;
   }
   .seg button {
-    font: inherit;
-    font-size: 12.5px;
     background: var(--bg-raised);
     color: var(--ink-muted);
     border: none;
-    padding: 7px 12px;
+    padding: 0 12px;
     cursor: pointer;
     border-right: 1px solid var(--border);
   }
@@ -383,6 +394,83 @@
     font-size: 14px;
   }
 
+  /* ---------- version / changelog ---------- */
+  .version-badge {
+    align-self: flex-start;
+    font: inherit;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+  }
+  .version-badge:hover, .version-badge:focus-visible { color: var(--accent); text-decoration-color: var(--accent); }
+  .version-badge:empty { display: none; }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: var(--scrim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop[hidden] { display: none; }
+  .modal {
+    width: 100%;
+    max-width: 420px;
+    max-height: min(560px, 80vh);
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-raised);
+    color: var(--ink);
+    border-radius: 12px;
+    box-shadow: 0 24px 60px var(--shadow);
+    overflow: hidden;
+  }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-head h2 { margin: 0; font-size: 16px; }
+  .modal-close {
+    font: inherit;
+    font-size: 20px;
+    line-height: 1;
+    background: none;
+    border: none;
+    color: var(--ink-muted);
+    cursor: pointer;
+    padding: 4px;
+  }
+  .modal-close:hover { color: var(--ink); }
+  .modal-body { padding: 16px 18px; overflow-y: auto; }
+  .changelog-entry + .changelog-entry { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .changelog-entry h3 { margin: 0 0 2px; font-size: 13.5px; }
+  .changelog-entry .changelog-date { font-size: 11px; color: var(--ink-muted); margin-bottom: 8px; }
+  .changelog-entry ul { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.5; }
+  .changelog-entry li { margin-bottom: 4px; }
+  .modal-foot { padding: 14px 18px; border-top: 1px solid var(--border); text-align: right; }
+  .modal-ok {
+    font: inherit;
+    font-size: 13px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    padding: 9px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+
   /* ---------- table view ---------- */
   .table-wrap {
     overflow-x: auto;
@@ -466,7 +554,22 @@
       flex-direction: column;
       align-items: stretch;
     }
-    .filters-panel.open { display: flex; }
+    /* Floats over the grid as a dropdown instead of pushing content down;
+       header is position:sticky, which also makes it the containing block. */
+    .filters-panel.open {
+      display: flex;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      margin-top: 0;
+      padding: 12px max(20px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 14px 28px var(--shadow);
+      z-index: 25;
+      gap: 10px;
+    }
     .filters-panel.open > * { width: 100%; }
     .filters-panel.open .seg { width: 100%; }
     .filters-panel.open .seg button { flex: 1; text-align: center; }
@@ -505,6 +608,7 @@
   <div class="bar bar-top">
     <div class="title-block">
       <h1>MCU Poster Wall</h1>
+      <button type="button" class="version-badge" id="version-badge" hidden></button>
     </div>
     <input type="search" id="q" placeholder="Search…" autocomplete="off">
     <button type="button" id="filters-toggle" class="filters-btn" aria-expanded="false" aria-controls="filters-panel">
@@ -518,7 +622,11 @@
     <div class="progress-text"><b id="watched-count">0</b> / <span id="total-count">0</span> watched</div>
   </div>
   <div class="bar filters-panel" id="filters-panel">
-    <select id="f-type"></select>
+    <div class="seg multi" id="type-filter" role="group" aria-label="Filter by type (multiple)">
+      <button type="button" data-val="Movies" aria-pressed="false">Movies</button>
+      <button type="button" data-val="TV Series" aria-pressed="false">TV Series</button>
+      <button type="button" data-val="Specials" aria-pressed="false">Specials</button>
+    </div>
     <div class="seg multi" id="priority-filter" role="group" aria-label="Filter by priority (multiple)">
       <button type="button" data-val="Essential" aria-pressed="false">Essential</button>
       <button type="button" data-val="Recommended" aria-pressed="false">Recommended</button>
@@ -566,9 +674,30 @@
   <div class="empty-state" id="empty-state" hidden>No entries match this filter.</div>
 </main>
 
+<div class="modal-backdrop" id="changelog-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="changelog-title">
+    <div class="modal-head">
+      <h2 id="changelog-title">What's new</h2>
+      <button type="button" class="modal-close" id="changelog-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body" id="changelog-body"></div>
+    <div class="modal-foot">
+      <button type="button" class="modal-ok" id="changelog-ok">Got it</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function () {
   "use strict";
+
+  // iOS Safari (especially launched from the home-screen icon) can restore
+  // the page already scrolled a few px past the top, which hides the sticky
+  // header behind the status bar until the user drags down. Force it back.
+  function pinToTop() { if (window.scrollY !== 0) window.scrollTo(0, 0); }
+  pinToTop();
+  window.addEventListener("load", pinToTop);
+  window.addEventListener("pageshow", pinToTop);
 
   // [id, title, type, format, setIn, runtimeMin, postCredits, priority, doomsday, rtCritics, rtAudience, notes]
   const RAW = [
@@ -698,6 +827,48 @@
     "Special": "#4c7a6b", "Animated Short": "#6b7a3e", "One-Shot": "#6b6b6b"
   };
   const PRIORITY_VAR = { "Essential": "--seal-red", "Recommended": "--accent", "Completionist": "--moss" };
+  const TYPE_GROUP = {
+    "Movie": "Movies",
+    "TV Series": "TV Series", "Mini-Series": "TV Series",
+    "Special": "Specials", "One-Shot": "Specials", "Animated Short": "Specials"
+  };
+
+  const APP_VERSION = "1.1.0";
+  // Mirrors CHANGELOG.json on GitHub; used only if the live fetch fails
+  // (offline, or CHANGELOG.json hasn't caught up with this deploy yet).
+  const CHANGELOG_FALLBACK = [
+    {
+      "version": "1.1.0",
+      "date": "2026-08-12",
+      "changes": [
+        "Filters (type, priority, watched status, sort, search) now persist between visits.",
+        "Type filter simplified to Movies / TV Series / Specials, and now supports picking several at once.",
+        "On mobile, the filters panel now floats over the poster grid instead of pushing it down.",
+        "Unified sizing and behavior across all filter controls.",
+        "Reclaimed wasted space in the search bar and toolbar.",
+        "Fixed an iOS Safari bug where the top bar could be hidden until you scrolled.",
+        "Added this changelog — you'll see what's new here whenever a new version ships."
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-08-07",
+      "changes": [
+        "Initial release: poster grid and table view, search, filters, sort, and per-device watched-progress tracking."
+      ]
+    }
+  ];
+  const CHANGELOG_URL = "https://raw.githubusercontent.com/ChristosTanailidis/mcu-poster-wall/main/CHANGELOG.json";
+  const CHANGELOG_SEEN_KEY = "mcu-poster-wall-changelog-seen-v1";
+
+  function compareVersions(a, b) {
+    const pa = String(a).split(".").map(Number), pb = String(b).split(".").map(Number);
+    for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+      const na = pa[i] || 0, nb = pb[i] || 0;
+      if (na !== nb) return na - nb;
+    }
+    return 0;
+  }
 
   const STORE_KEY = "tva-sacred-timeline-watchlist-v1";
   function loadWatched() {
@@ -818,18 +989,11 @@
     </tr>`;
   }
 
-  const state = { q: "", type: "all", watch: "all", priorities: new Set(), sort: "chrono", view: "grid" };
-
-  function populateSelect(id, values, allLabel) {
-    const el = document.getElementById(id);
-    el.innerHTML = `<option value="all">${allLabel}</option>` +
-      values.map(v => `<option value="${v}">${v}</option>`).join("");
-  }
-  populateSelect("f-type", [...new Set(MOVIES.map(m => m.type))], "All Types");
+  const state = { q: "", types: new Set(), watch: "all", priorities: new Set(), sort: "chrono", view: "grid" };
 
   function applyFilters() {
     return MOVIES.filter(m => {
-      if (state.type !== "all" && m.type !== state.type) return false;
+      if (state.types.size > 0 && !state.types.has(TYPE_GROUP[m.type])) return false;
       if (state.priorities.size > 0 && !state.priorities.has(m.priority)) return false;
       if (state.watch === "watched" && !watched.has(m.id)) return false;
       if (state.watch === "unwatched" && watched.has(m.id)) return false;
@@ -901,7 +1065,7 @@
   }
 
   function updateFilterBadge() {
-    const count = (state.type !== "all" ? 1 : 0) + state.priorities.size + (state.watch !== "all" ? 1 : 0);
+    const count = state.types.size + state.priorities.size + (state.watch !== "all" ? 1 : 0);
     const badge = document.getElementById("filter-count");
     badge.textContent = count;
     badge.hidden = count === 0;
@@ -915,11 +1079,32 @@
     btn.setAttribute("aria-expanded", nowOpen);
   });
 
+  const FILTERS_KEY = "mcu-poster-wall-filters-v1";
+  function saveFilters() {
+    localStorage.setItem(FILTERS_KEY, JSON.stringify({
+      q: state.q,
+      types: [...state.types],
+      priorities: [...state.priorities],
+      watch: state.watch,
+      sort: state.sort
+    }));
+  }
+
   document.getElementById("q").addEventListener("input", e => {
     state.q = e.target.value.trim().toLowerCase();
+    saveFilters();
     render();
   });
-  document.getElementById("f-type").addEventListener("change", e => { state.type = e.target.value; render(); });
+  document.getElementById("type-filter").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-val]");
+    if (!btn) return;
+    const val = btn.dataset.val;
+    const nowOn = btn.getAttribute("aria-pressed") !== "true";
+    btn.setAttribute("aria-pressed", nowOn);
+    if (nowOn) state.types.add(val); else state.types.delete(val);
+    saveFilters();
+    render();
+  });
   document.getElementById("priority-filter").addEventListener("click", e => {
     const btn = e.target.closest("button[data-val]");
     if (!btn) return;
@@ -927,6 +1112,7 @@
     const nowOn = btn.getAttribute("aria-pressed") !== "true";
     btn.setAttribute("aria-pressed", nowOn);
     if (nowOn) state.priorities.add(val); else state.priorities.delete(val);
+    saveFilters();
     render();
   });
   document.getElementById("watch-toggle-group").addEventListener("click", e => {
@@ -934,9 +1120,14 @@
     if (!btn) return;
     state.watch = btn.dataset.val;
     [...btn.parentElement.children].forEach(b => b.setAttribute("aria-pressed", b === btn));
+    saveFilters();
     render();
   });
-  document.getElementById("f-sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+  document.getElementById("f-sort").addEventListener("change", e => {
+    state.sort = e.target.value;
+    saveFilters();
+    render();
+  });
 
   const VIEW_KEY = "mcu-poster-wall-view-v1";
   document.getElementById("view-toggle-group").addEventListener("click", e => {
@@ -978,6 +1169,12 @@
     if (!e.target.closest(".tile")) {
       document.querySelectorAll(".tile.expanded").forEach(t => t.classList.remove("expanded"));
     }
+    const panel = document.getElementById("filters-panel");
+    const toggle = document.getElementById("filters-toggle");
+    if (panel.classList.contains("open") && !e.target.closest("#filters-panel") && !e.target.closest("#filters-toggle")) {
+      panel.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
   });
 
   const savedView = localStorage.getItem(VIEW_KEY);
@@ -987,7 +1184,91 @@
     [...grp.children].forEach(b => b.setAttribute("aria-pressed", b.dataset.val === savedView));
   }
 
+  (function restoreFilters() {
+    let saved;
+    try { saved = JSON.parse(localStorage.getItem(FILTERS_KEY)); } catch (e) { saved = null; }
+    if (!saved) return;
+
+    if (typeof saved.q === "string") {
+      state.q = saved.q;
+      document.getElementById("q").value = saved.q;
+    }
+    if (Array.isArray(saved.types)) {
+      state.types = new Set(saved.types);
+      const grp = document.getElementById("type-filter");
+      [...grp.children].forEach(b => b.setAttribute("aria-pressed", state.types.has(b.dataset.val)));
+    }
+    if (Array.isArray(saved.priorities)) {
+      state.priorities = new Set(saved.priorities);
+      const grp = document.getElementById("priority-filter");
+      [...grp.children].forEach(b => b.setAttribute("aria-pressed", state.priorities.has(b.dataset.val)));
+    }
+    if (saved.watch === "all" || saved.watch === "watched" || saved.watch === "unwatched") {
+      state.watch = saved.watch;
+      const grp = document.getElementById("watch-toggle-group");
+      [...grp.children].forEach(b => b.setAttribute("aria-pressed", b.dataset.val === saved.watch));
+    }
+    if (typeof saved.sort === "string") {
+      state.sort = saved.sort;
+      document.getElementById("f-sort").value = saved.sort;
+    }
+  })();
+
   render();
+
+  // ---------- changelog ----------
+  function renderChangelogEntries(entries) {
+    return entries.map(e => `
+      <div class="changelog-entry">
+        <h3>v${escapeHTML(e.version)}</h3>
+        <div class="changelog-date">${escapeHTML(e.date || "")}</div>
+        <ul>${(e.changes || []).map(c => `<li>${escapeHTML(c)}</li>`).join("")}</ul>
+      </div>`).join("");
+  }
+
+  function openChangelogModal(entries, latestVersion) {
+    document.getElementById("changelog-body").innerHTML = renderChangelogEntries(entries);
+    const backdrop = document.getElementById("changelog-backdrop");
+    backdrop.hidden = false;
+    const close = () => {
+      backdrop.hidden = true;
+      if (latestVersion) localStorage.setItem(CHANGELOG_SEEN_KEY, latestVersion);
+    };
+    document.getElementById("changelog-ok").onclick = close;
+    document.getElementById("changelog-close").onclick = close;
+    backdrop.onclick = e => { if (e.target === backdrop) close(); };
+  }
+
+  async function initChangelog() {
+    let entries;
+    try {
+      const res = await fetch(CHANGELOG_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("changelog fetch failed: " + res.status);
+      entries = await res.json();
+      if (!Array.isArray(entries) || !entries.length) throw new Error("empty changelog");
+    } catch (e) {
+      entries = CHANGELOG_FALLBACK;
+    }
+    entries = entries.slice().sort((a, b) => compareVersions(b.version, a.version));
+    const latest = entries[0].version;
+
+    const badge = document.getElementById("version-badge");
+    badge.textContent = "v" + latest;
+    badge.hidden = false;
+    badge.addEventListener("click", () => openChangelogModal(entries, null));
+
+    const seen = localStorage.getItem(CHANGELOG_SEEN_KEY);
+    if (seen === null) {
+      // First-ever visit: nothing to announce, just baseline silently.
+      localStorage.setItem(CHANGELOG_SEEN_KEY, latest);
+      return;
+    }
+    if (compareVersions(seen, latest) < 0) {
+      const unseen = entries.filter(e => compareVersions(e.version, seen) > 0);
+      openChangelogModal(unseen.length ? unseen : entries, latest);
+    }
+  }
+  initChangelog();
 })();
 </script>
 </body>
