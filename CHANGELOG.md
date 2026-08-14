@@ -3,8 +3,23 @@
 Human-readable mirror of [`CHANGELOG.json`](CHANGELOG.json), which the app fetches at
 runtime (from GitHub) to populate its in-app "what's new" changelog. Keep both files
 in sync when releasing a new version — update this file, `CHANGELOG.json`, and the
-`CHANGELOG_FALLBACK` constant + `APP_VERSION` in `poster-wall.html`, then tag the
+`CHANGELOG_FALLBACK` constant + `APP_VERSION` in `index.html`, then tag the
 commit (`git tag vX.Y.Z`).
+
+## 1.2.0 — 2026-08-15
+
+- Tap a poster or list row to open a fullscreen detail view — big art, Doomsday
+  meter, RT scores, and full notes.
+- Added a fullscreen "Time Watched" view (tap the watched count) — watched vs.
+  remaining, broken down by priority and by type.
+- You can now hide titles you don't want to see, with a new Hidden filter to
+  review or restore them.
+- Replaced the Table view with a mobile-friendly List view — swipe right to mark
+  watched, swipe left to hide.
+- Reworked the visual theme to actually look like Marvel: black/red header, bold
+  title treatment, red used consistently for primary actions.
+- Fixed the iOS Home Screen app header being hidden under the status bar overlay
+  on the newest iOS.
 
 ## 1.1.0 — 2026-08-12
 
