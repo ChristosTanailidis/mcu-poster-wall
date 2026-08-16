@@ -1,0 +1,1480 @@
+  :root {
+    --bg: #f3f2ef;
+    --bg-raised: #ffffff;
+    --ink: #171613;
+    --ink-muted: #6b675d;
+    --border: #dedad0;
+    --accent: #c1611c;
+    --accent-ink: #ffffff;
+    --seal-red: #d4141c;
+    --moss: #5f7a4f;
+    --shadow: rgba(23, 22, 19, 0.16);
+    --scrim: rgba(10, 9, 7, 0.86);
+    --chip-bg: rgba(15, 14, 12, 0.55);
+    --ring: rgba(255, 255, 255, 0.75);
+    /* Flat priority-badge tint/ink pairs (see .detail-priority-badge,
+       .tile-priority-dot's neighbors) — derived once here from the theme
+       tokens above via color-mix(), so they stay correct across every
+       theme without needing to be redeclared in the override blocks
+       below: color-mix()'s var() references resolve against whichever
+       theme is active on the element that ends up using them, not the
+       theme active where this block happens to be declared. */
+    --seal-red-tint: color-mix(in srgb, var(--seal-red) 16%, var(--bg-raised));
+    --seal-red-badge-ink: color-mix(in srgb, var(--seal-red) 68%, var(--ink));
+    --accent-tint: color-mix(in srgb, var(--accent) 16%, var(--bg-raised));
+    --accent-badge-ink: color-mix(in srgb, var(--accent) 68%, var(--ink));
+    --moss-tint: color-mix(in srgb, var(--moss) 16%, var(--bg-raised));
+    --moss-badge-ink: color-mix(in srgb, var(--moss) 68%, var(--ink));
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #131210;
+      --bg-raised: #1c1a17;
+      --ink: #efe9dc;
+      --ink-muted: #948c79;
+      --border: #322f28;
+      --accent: #e0904a;
+      --accent-ink: #17130b;
+      --seal-red: #ff5c54;
+      --moss: #8faa79;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --scrim: rgba(6, 5, 4, 0.9);
+      --chip-bg: rgba(0, 0, 0, 0.55);
+      --ring: rgba(255, 255, 255, 0.65);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #131210;
+    --bg-raised: #1c1a17;
+    --ink: #efe9dc;
+    --ink-muted: #948c79;
+    --border: #322f28;
+    --accent: #e0904a;
+    --accent-ink: #17130b;
+    --seal-red: #ff5c54;
+    --moss: #8faa79;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --scrim: rgba(6, 5, 4, 0.9);
+    --chip-bg: rgba(0, 0, 0, 0.55);
+    --ring: rgba(255, 255, 255, 0.65);
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f2ef;
+    --bg-raised: #ffffff;
+    --ink: #171613;
+    --ink-muted: #6b675d;
+    --border: #dedad0;
+    --accent: #c1611c;
+    --accent-ink: #ffffff;
+    --seal-red: #d4141c;
+    --moss: #5f7a4f;
+    --shadow: rgba(23, 22, 19, 0.16);
+    --scrim: rgba(10, 9, 7, 0.86);
+    --chip-bg: rgba(15, 14, 12, 0.55);
+    --ring: rgba(255, 255, 255, 0.75);
+  }
+
+  * { box-sizing: border-box; }
+  html {
+    height: 100%;
+    /* Stops iOS Safari's rubber-band overscroll from leaving the page
+       scrolled past the top on load, which hid the sticky header until
+       the user dragged the page down manually. */
+    overscroll-behavior-y: none;
+  }
+  body {
+    margin: 0;
+    min-height: 100%;
+    overscroll-behavior-y: none;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+
+  /* ---------- loading splash ---------- */
+  /* A quick, fully-opaque "Doom is coming" flash, shown at most once an
+     hour (see the splash timing IIFE near the top of app.js — it also
+     skips creating any of this under prefers-reduced-motion, so there's
+     no reduced-motion override needed down here). Deliberately brief and
+     undismissable-by-design (it clears itself), not a modal. Reuses the
+     same Doctor Doom mask + green/gold palette as the 100%-completion
+     overlay for a consistent "the Doom motif" language across the app. */
+  .splash-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #14311d 0%, #060a06 68%, #030402 100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.32s ease;
+  }
+  .splash-overlay.show { opacity: 1; }
+
+  .splash-embers { position: absolute; inset: 0; }
+  .splash-embers span {
+    position: absolute;
+    bottom: -10px;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #e7c66b;
+    box-shadow: 0 0 6px 1px rgba(231, 198, 107, 0.8);
+    opacity: 0;
+  }
+  .splash-overlay.show .splash-embers span { animation: splashEmberRise 1.6s ease-in forwards; }
+  /* Hand-placed rather than generated — plain CSS has no loop construct,
+     and a dozen embers is few enough to just enumerate. */
+  .splash-embers span:nth-child(1)  { left: 8%;  animation-delay: 0.02s; }
+  .splash-embers span:nth-child(2)  { left: 18%; animation-delay: 0.18s; }
+  .splash-embers span:nth-child(3)  { left: 27%; animation-delay: 0.05s; }
+  .splash-embers span:nth-child(4)  { left: 38%; animation-delay: 0.3s; }
+  .splash-embers span:nth-child(5)  { left: 47%; animation-delay: 0.12s; }
+  .splash-embers span:nth-child(6)  { left: 56%; animation-delay: 0.24s; }
+  .splash-embers span:nth-child(7)  { left: 64%; animation-delay: 0.08s; }
+  .splash-embers span:nth-child(8)  { left: 72%; animation-delay: 0.34s; }
+  .splash-embers span:nth-child(9)  { left: 80%; animation-delay: 0.15s; }
+  .splash-embers span:nth-child(10) { left: 88%; animation-delay: 0.28s; }
+  .splash-embers span:nth-child(11) { left: 94%; animation-delay: 0.4s; }
+  .splash-embers span:nth-child(12) { left: 3%;  animation-delay: 0.36s; }
+  @keyframes splashEmberRise {
+    0% { opacity: 0; transform: translateY(0) scale(1); }
+    12% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-260px) scale(0.4); }
+  }
+
+  .splash-mask { opacity: 0; }
+  .splash-overlay.show .splash-mask { animation: splashMaskIn 0.7s cubic-bezier(.2,1.4,.4,1) forwards; }
+  @keyframes splashMaskIn {
+    0% { opacity: 0; transform: scale(0.6); filter: drop-shadow(0 0 0 rgba(70, 200, 120, 0)); }
+    55% { opacity: 1; transform: scale(1.08); filter: drop-shadow(0 0 30px rgba(70, 200, 120, 0.85)); }
+    100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 20px rgba(70, 200, 120, 0.5)); }
+  }
+
+  .splash-caption {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #e7c66b;
+    text-shadow: 0 0 12px rgba(231, 198, 107, 0.5);
+    opacity: 0;
+  }
+  .splash-overlay.show .splash-caption { animation: splashCaptionIn 0.5s ease 0.22s forwards; }
+  @keyframes splashCaptionIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- top bar ---------- */
+  /* Header is deliberately a fixed black/red band regardless of the
+     light/dark theme toggle below — every header-internal control still
+     reads --bg/--bg-raised/--ink/--ink-muted/--border via var(), so
+     redeclaring those four here re-themes the whole bar (and the mobile
+     filters dropdown, which lives inside <header>) without touching
+     every individual rule. */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(48, 48, 52, 0.55);
+    backdrop-filter: blur(22px) saturate(1.6);
+    -webkit-backdrop-filter: blur(22px) saturate(1.6);
+    color: var(--ink);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    padding: max(14px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) 14px max(20px, env(safe-area-inset-left));
+    --bg: transparent;
+    --bg-raised: rgba(255, 255, 255, 0.14);
+    --ink: #f5f4f2;
+    --ink-muted: #d5d3ce;
+    --border: rgba(255, 255, 255, 0.26);
+  }
+  /* iOS 26 "Liquid Glass" draws its translucent status-bar chrome past the
+     real env(safe-area-inset-top) value when installed to the Home Screen,
+     so the safe-area padding above isn't enough there even though it's
+     correct for the notch/Dynamic Island in a normal browser tab. Add an
+     extra buffer, scoped to standalone mode only, so tab usage is untouched.
+     Buffer size is a conservative estimate — simulators don't reproduce this
+     chrome, so it needs confirming on a real device. */
+  @media (display-mode: standalone) {
+    header, .fullscreen-head {
+      padding-top: max(14px, calc(env(safe-area-inset-top) + 22px));
+    }
+  }
+  .bar {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .bar-top { flex-wrap: nowrap; }
+  .bar-top .title-block { flex: 0 1 auto; min-width: 0; overflow: hidden; }
+  .bar-top .title-block h1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* Search, the filters toggle, and the grid/list switch are grouped in one
+     row together — .bar-controls keeps that trio glued as a single unit so
+     it wraps as a whole on narrow screens instead of splitting apart. */
+  .bar-controls { display: flex; align-items: center; gap: 14px; flex: 1 1 auto; min-width: 0; }
+  .bar-top #q { flex: 1 1 240px; min-width: 0; }
+
+  /* Search input, selects, and every filter-row button share one height/shape. */
+  input[type="search"], select, .filters-btn, .seg button {
+    font: inherit;
+    font-size: 13px;
+    min-height: 36px;
+  }
+
+  .filters-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-raised);
+    backdrop-filter: blur(14px) saturate(1.7);
+    -webkit-backdrop-filter: blur(14px) saturate(1.7);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    padding: 0 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .filters-btn[aria-expanded="true"] { background: var(--seal-red); color: #fff; border-color: var(--seal-red); }
+  .filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--seal-red);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .filters-btn[aria-expanded="true"] .filter-count { background: rgba(255,255,255,0.3); }
+
+  .filters-panel {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  /* Floats over the grid as a dropdown instead of pushing content down;
+     header is position:sticky, which also makes it the containing block. */
+  .filters-panel.open {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    padding: 12px max(20px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+    background: rgba(40, 40, 44, 0.88);
+    backdrop-filter: blur(22px) saturate(1.6);
+    -webkit-backdrop-filter: blur(22px) saturate(1.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 14px 28px var(--shadow);
+    z-index: 25;
+    gap: 10px;
+  }
+  .filters-panel.open > * { width: 100%; }
+  .filters-panel.open .seg { width: 100%; }
+  .filters-panel.open .seg button { flex: 1; text-align: center; }
+  .clear-filters-btn {
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--ink-muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 9px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+  .clear-filters-btn:hover, .clear-filters-btn:focus-visible { color: var(--seal-red); border-color: var(--seal-red); }
+  .title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-right: 6px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .view-link {
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .view-link:hover { color: var(--seal-red); border-color: var(--seal-red); }
+
+  input[type="search"], select {
+    background: var(--bg-raised);
+    backdrop-filter: blur(14px) saturate(1.7);
+    -webkit-backdrop-filter: blur(14px) saturate(1.7);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    padding: 0 12px;
+    border-radius: 7px;
+  }
+  input[type="search"]::placeholder { color: var(--ink-muted); opacity: 1; }
+  input[type="search"] { width: 190px; }
+  input[type="search"]:focus, select:focus, button:focus-visible, .tile:focus-visible {
+    outline: 2px solid var(--seal-red);
+    outline-offset: 2px;
+  }
+
+  .seg {
+    display: flex;
+    min-height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  .seg button {
+    background: var(--bg-raised);
+    backdrop-filter: blur(14px) saturate(1.7);
+    -webkit-backdrop-filter: blur(14px) saturate(1.7);
+    color: var(--ink-muted);
+    border: none;
+    padding: 0 12px;
+    cursor: pointer;
+    border-right: 1px solid var(--border);
+  }
+  .seg button:last-child { border-right: none; }
+  .seg button[aria-pressed="true"] { background: var(--seal-red); color: #fff; }
+
+  /* No padding override here — it inherits .seg button's padding so it
+     stays exactly the same height as the Filters button and search box in
+     both the desktop and mobile rules above/below. An earlier ID-specific
+     padding here (higher specificity than .seg button) was silently
+     defeating the mobile-only padding bump, leaving this control visibly
+     shorter than its neighbors on small screens. */
+  #view-toggle-group button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #view-toggle-group svg { width: 16px; height: 16px; display: block; }
+
+  .seg.multi button[data-val="Essential"][aria-pressed="true"] { background: var(--seal-red); color: #fff; }
+  .seg.multi button[data-val="Recommended"][aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+  .seg.multi button[data-val="Completionist"][aria-pressed="true"] { background: var(--moss); color: #fff; }
+
+  .spacer { flex: 1; }
+  .progress-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: inherit;
+    font-size: 12px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 3px 12px 3px 3px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .progress-text:hover, .progress-text:focus-visible {
+    background: var(--bg-raised);
+    border-color: var(--border);
+  }
+  .progress-text b { color: var(--ink); }
+  /* Three-stop ring: watched (red), hidden titles "locked" out of the %
+     (muted gray), then remaining unwatched-and-visible (border color).
+     --watched-frac/--hidden-frac are fractions of the FULL catalog (see
+     updateStats in app.js) — the displayed --pct text stays visible-only,
+     which is why the "remaining" arc reaches 0 exactly when every visible
+     title is watched, regardless of how much is hidden. */
+  .progress-ring {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--seal-red) 0 calc(var(--watched-frac, 0) * 1%),
+      var(--ink-muted) 0 calc((var(--watched-frac, 0) + var(--hidden-frac, 0)) * 1%),
+      var(--border) 0
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .progress-ring-pct {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .progress-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+  .progress-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    color: var(--ink-muted);
+  }
+  .progress-text:hover .progress-cta, .progress-text:focus-visible .progress-cta { color: var(--seal-red); }
+  .progress-chevron { font-size: 12px; line-height: 1; }
+
+  /* ---------- grid ---------- */
+  main { max-width: 1400px; margin: 0 auto; padding: 22px 20px 60px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px 14px;
+  }
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    /* iOS Safari's long-press-on-image behavior (magnifier + a
+       save/share callout menu) fires independently of our pointer
+       handlers and was hijacking the long-press-to-toggle-watched
+       gesture — this (plus the same pair on .tile-art img below)
+       suppresses it entirely. */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  /* Grows while the long-press-to-toggle-watched gesture is held (see
+     initTileLongPress in app.js) — snaps back to 1 on release either way,
+     whether the hold completed or was cancelled early. */
+  .tile.pressing {
+    transform: scale(1.1);
+    transition: transform 0.5s cubic-bezier(0.22, 0.8, 0.32, 1);
+  }
+
+  /* Title + priority dot sit under the poster with no card of their own
+     (no background, no shadow) — the poster art (.tile-art below) is the
+     only "card" element. */
+  .tile-title-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 2px 0;
+  }
+  .tile-priority-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+  .tile-title {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tile-art {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-raised);
+    box-shadow: 0 1px 3px var(--shadow);
+  }
+  .tile-art img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* -webkit-touch-callout:none only suppresses the share-sheet menu —
+       iOS Safari separately treats every <img> as draggable and shows its
+       own "lift" preview (a brief zoom + dim) on long-press as it
+       arms for a potential drag-out gesture. This (plus draggable="false"
+       on the <img> itself) turns that off too. */
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+  .tile-art img.poster-bg {
+    filter: blur(16px) brightness(0.6) saturate(1.1);
+    transform: scale(1.2);
+    object-position: center center;
+  }
+  .tile-art img.poster-fg.is-landscape {
+    object-fit: contain;
+    object-position: center center;
+  }
+  .tile-art.no-art { display: flex; align-items: center; justify-content: center; padding: 10px; }
+  .tile-art.no-art .fallback-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+    color: rgba(255,255,255,0.92);
+  }
+
+  .chip {
+    position: absolute;
+    top: 6px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 6px;
+    border-radius: 4px;
+    background: var(--chip-bg);
+    color: #fff;
+    backdrop-filter: blur(3px);
+  }
+  .chip.type { left: 6px; }
+
+  .watch-toggle {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ring);
+    background: var(--chip-bg);
+    backdrop-filter: blur(3px);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+  }
+  .watch-toggle svg { width: 12px; height: 12px; opacity: 0; transition: opacity 0.12s ease; }
+  .watch-toggle.watched {
+    background: var(--moss);
+    border-color: var(--moss);
+  }
+  .watch-toggle.watched svg { opacity: 1; }
+  @keyframes watchPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.35); }
+    65% { transform: scale(0.92); }
+    100% { transform: scale(1); }
+  }
+  @keyframes watchRing {
+    from { transform: scale(0.5); opacity: 0.9; }
+    to { transform: scale(2.1); opacity: 0; }
+  }
+  .watch-toggle.just-watched { animation: watchPop 0.45s cubic-bezier(.34,1.56,.64,1); }
+  .watch-toggle.just-watched::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid var(--moss);
+    animation: watchRing 0.5s ease-out;
+    pointer-events: none;
+  }
+  .detail-action-btn.watch.just-watched { animation: watchPop 0.45s cubic-bezier(.34,1.56,.64,1); }
+
+  .hide-toggle {
+    position: absolute;
+    top: 36px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ring);
+    background: var(--chip-bg);
+    backdrop-filter: blur(3px);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.55;
+    transition: opacity 0.12s ease;
+  }
+  .hide-toggle svg { width: 12px; height: 12px; }
+  .tile:hover .hide-toggle, .tile:focus-within .hide-toggle, .hide-toggle.is-hidden {
+    opacity: 1;
+  }
+  .hide-toggle.is-hidden {
+    background: var(--seal-red);
+    border-color: var(--seal-red);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--ink-muted);
+    font-size: 14px;
+  }
+
+  /* ---------- version / changelog ---------- */
+  .version-badge {
+    align-self: flex-start;
+    font: inherit;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+  }
+  .version-badge:hover, .version-badge:focus-visible { color: var(--seal-red); text-decoration-color: var(--seal-red); }
+  .version-badge:empty { display: none; }
+
+  /* ---------- shared bottom-sheet dialogs (changelog, stats, movie detail) ---------- */
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    background: var(--scrim);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .sheet-backdrop[hidden] { display: none; }
+  .sheet-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.45);
+    flex-shrink: 0;
+  }
+  .changelog-entry + .changelog-entry { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .changelog-entry h3 { margin: 0 0 2px; font-size: 13.5px; }
+  .changelog-entry .changelog-date { font-size: 11px; color: var(--ink-muted); margin-bottom: 8px; }
+  .changelog-entry ul { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.5; }
+  .changelog-entry li { margin-bottom: 4px; }
+  .modal-foot {
+    flex-shrink: 0;
+    padding: 14px max(18px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+    border-top: 1px solid var(--border);
+    text-align: right;
+  }
+  .modal-ok {
+    font: inherit;
+    font-size: 13px;
+    background: var(--seal-red);
+    color: #fff;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+
+  /* ---------- fullscreen views (changelog, stats, movie detail) ---------- */
+  .fullscreen-view {
+    position: fixed;
+    top: max(48px, calc(env(safe-area-inset-top) + 28px));
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: var(--bg);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    box-shadow: 0 -10px 40px var(--shadow);
+    transform: translateY(100%);
+    transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .fullscreen-view.open { transform: translateY(0); }
+  .fullscreen-view.dragging { transition: none; }
+  .fullscreen-view[hidden] { display: none; }
+  .fullscreen-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    background: #0a0a0a;
+    color: #f5f4f2;
+    border-bottom: 3px solid var(--seal-red);
+    padding: 10px max(20px, env(safe-area-inset-right)) 14px max(20px, env(safe-area-inset-left));
+    /* none, not pan-y: this is the drag-to-dismiss zone, so the browser
+       must not take over vertical touch gestures here — pan-y would let
+       iOS Safari's native (rubber-banding) scroll win the gesture before
+       the pointer handlers below ever get a chance to preventDefault it. */
+    touch-action: none;
+  }
+  .fullscreen-head h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .fullscreen-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Stops a drag that hits the end of this scroll area from chaining
+       into the page behind the sheet (see lockBodyScroll in app.js, which
+       handles the rest of that same fix). */
+    overscroll-behavior-y: contain;
+    padding: 20px max(20px, env(safe-area-inset-right)) max(30px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  }
+  /* Timeline-to-timeline navigation within the detail view: the outgoing
+     and incoming .detail-container are briefly stacked (positioning only —
+     the slide-past-each-other motion itself is driven by swapDetailContent()
+     via the Web Animations API, not a CSS transition), so the motion shows
+     which way you moved in the chronology. */
+  .fullscreen-body.swapping { position: relative; }
+  .detail-slide-new {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  /* Detail view has no head bar — the drag handle floats over the colored
+     hero instead, and the title lives once, next to the poster. */
+  #detail-body { padding: 0; }
+
+  /* ---------- stats view ---------- */
+  .stats-section + .stats-section { margin-top: 28px; }
+  .stats-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin: 0 0 14px;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+  }
+  .stat-metric-toggle {
+    width: fit-content;
+    margin: 0 auto 16px;
+  }
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 12px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+  }
+  .stat-card-title { font-size: 12.5px; font-weight: 700; }
+  .donut {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    background: conic-gradient(var(--donut-color, var(--moss)) calc(var(--pct, 0) * 1%), var(--border) 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  /* Overall-only variant: adds a muted "hidden titles, locked out of the %"
+     slice — see donutHTML's hiddenVars param and the .progress-ring comment
+     above for why the fractions are of the full pool, not just visible. */
+  .donut.with-hidden {
+    background: conic-gradient(
+      var(--donut-color, var(--moss)) 0 calc(var(--watched-frac, 0) * 1%),
+      var(--ink-muted) 0 calc((var(--watched-frac, 0) + var(--hidden-frac, 0)) * 1%),
+      var(--border) 0
+    );
+  }
+  .donut-hole {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    background: var(--bg-raised);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .donut-pct { font-size: 16px; font-weight: 800; }
+  .donut-hours { font-size: 9px; color: var(--ink-muted); margin-top: 1px; }
+  .stat-legend { font-size: 11px; color: var(--ink-muted); display: flex; flex-direction: column; gap: 3px; }
+  .stat-legend .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
+  .stats-footnote { font-size: 11px; color: var(--ink-muted); margin-top: 16px; }
+
+  /* ---------- movie detail view ---------- */
+  .detail-container { max-width: 640px; margin: 0 auto; }
+  /* Hero + timeline share one color scope: the JS sets each element's
+     `background` directly (sampled from the poster, same technique as the
+     list view) rather than going through a custom-property layer, so
+     there's one fewer thing that can silently fail to resolve. */
+  .detail-color-scope { position: relative; }
+  .detail-drag-handle {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .detail-hero-wrap {
+    position: relative;
+    padding: 30px max(20px, env(safe-area-inset-right)) 20px max(20px, env(safe-area-inset-left));
+    /* none, not pan-y: this is the drag-to-dismiss zone, so the browser
+       must not take over vertical touch gestures here — pan-y would let
+       iOS Safari's native (rubber-banding) scroll win the gesture before
+       the pointer handlers below ever get a chance to preventDefault it. */
+    touch-action: none;
+    --ink: #fff;
+    --ink-muted: rgba(255, 255, 255, 0.78);
+    --border: rgba(255, 255, 255, 0.3);
+    --bg-raised: rgba(255, 255, 255, 0.16);
+    /* Redeclaring --ink above only changes it for descendants that
+       reference var(--ink) themselves — plain `color` inherits as an
+       already-resolved value, so elements like .detail-movie-title that
+       don't set their own color would otherwise keep inheriting the
+       page's (dark) color straight through. Setting color here once,
+       where --ink is actually white, is what makes it actually cascade. */
+    color: var(--ink);
+  }
+  .detail-timeline-wrap {
+    --ink: #fff;
+    --ink-muted: rgba(255, 255, 255, 0.7);
+    color: var(--ink);
+    padding: 4px max(20px, env(safe-area-inset-right)) 18px max(20px, env(safe-area-inset-left));
+  }
+  .detail-timeline-wrap .detail-block { margin-top: 0; }
+  .detail-rest {
+    padding: 24px max(20px, env(safe-area-inset-right)) max(30px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  }
+  .detail-top { display: flex; gap: 16px; align-items: flex-start; }
+  /* No touch-action override here (unlike the drag-to-dismiss zones) —
+     the Iron Man hold (see initIronManHold in app.js) only needs to
+     detect movement to cancel itself, not take over the gesture, so a
+     scroll started from the poster is free to work normally. */
+  .detail-poster-wrap { position: relative; flex: 0 0 128px; width: 128px; }
+  .detail-poster-full {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 10px 26px var(--shadow);
+    /* This poster is tapped (Infinity Stones) and held (I am Iron Man) —
+       same iOS long-press quirks as the grid tiles, same fix. */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+  .detail-poster-full.no-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: rgba(255,255,255,0.92);
+  }
+  /* Infinity Stones easter egg: one gem lights up per tap on the Infinity
+     War poster, 6th tap triggers the existing snap animation. */
+  .infinity-stones {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    pointer-events: none;
+  }
+  .stone {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  @keyframes stoneLoot {
+    0% { transform: scale(0.4); }
+    55% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+  }
+  .stone.lit {
+    background: var(--stone-color);
+    border-color: var(--stone-color);
+    box-shadow: 0 0 7px var(--stone-color), 0 0 2px #fff;
+    animation: stoneLoot 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stone.lit { animation: none; }
+  }
+  /* Small discoverability hint for the Iron Man hold easter egg (see
+     initIronManHold in app.js) — arc-reactor styled. Infinity Stones taps
+     are visible as soon as you try them, but a hold has no feedback until
+     it's already complete, so this quietly signals "something's here"
+     without giving away exactly what. */
+  .ironman-hint {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7fd8ff;
+    background: rgba(4, 10, 16, 0.5);
+    pointer-events: none;
+    animation: ironManHintPulse 2.4s ease-in-out infinite;
+  }
+  .ironman-hint svg { width: 14px; height: 14px; }
+  @keyframes ironManHintPulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.12); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ironman-hint { animation: none; }
+  }
+  .detail-info { flex: 1 1 auto; min-width: 0; }
+  .detail-title-row { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+  .detail-movie-title { margin: 0; font-size: 19px; font-weight: 800; line-height: 1.28; text-shadow: none; }
+  .detail-priority-badge {
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .detail-type-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
+  .detail-type-chip {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    color: var(--ink-muted);
+  }
+  /* Each date/duration fact gets its own labeled row instead of one
+     middot-separated line, so "set in" (in-universe) and "released"
+     (real-world) read as clearly different kinds of date. */
+  .detail-fact-list { display: flex; flex-direction: column; gap: 5px; margin-top: 11px; }
+  .detail-fact-row { display: flex; align-items: baseline; gap: 8px; font-size: 12.5px; }
+  .detail-fact-label {
+    flex: 0 0 58px;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+  }
+  .detail-fact-value { color: var(--ink); font-weight: 600; }
+  .detail-fact-row.set-in .detail-fact-value { color: var(--accent); }
+  .detail-trailer-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 18px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 13px;
+    border-radius: 8px;
+    border: none;
+    background: var(--seal-red);
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .detail-actions { display: flex; gap: 10px; margin: 10px 0 8px; }
+  .detail-action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--bg-raised);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .detail-action-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .detail-action-btn.watch.active { background: var(--moss); border-color: var(--moss); color: #fff; }
+  .detail-action-btn.hide.active { background: var(--seal-red); border-color: var(--seal-red); color: #fff; }
+  .detail-block { margin-top: 26px; }
+  .detail-block h3 {
+    margin: 0 0 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+  }
+  .detail-block p { margin: 0; font-size: 15.5px; line-height: 1.65; }
+  .detail-meter { display: flex; align-items: center; gap: 8px; }
+  .detail-meter-track { flex: 1; height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .detail-meter-fill { height: 100%; }
+
+  .rt-scores { display: flex; gap: 28px; }
+  .rt-score { display: flex; align-items: center; gap: 10px; }
+  .rt-score-icon { width: 28px; height: 28px; flex-shrink: 0; }
+  .rt-score-icon svg { width: 100%; height: 100%; overflow: visible; }
+  .rt-score-value { display: block; font-size: 17px; font-weight: 800; }
+  .rt-score-label { display: block; font-size: 10.5px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .detail-timeline {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    /* overflow-x: auto forces the vertical axis to auto-clip too (only one
+       axis can stay "visible"), so the current-item outline ring (2px width
+       + 2px offset = 4px beyond the poster box) needs real clearance here or
+       it gets cropped top/bottom — a bare 2px isn't enough. */
+    padding: 6px;
+    margin: 0 -6px;
+  }
+  .detail-timeline-item {
+    flex: 0 0 auto;
+    width: 66px;
+    border: none;
+    background: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    cursor: pointer;
+    font: inherit;
+  }
+  .detail-timeline-item img, .dt-fallback {
+    width: 66px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .detail-timeline-item.current img, .detail-timeline-item.current .dt-fallback {
+    outline: 2px solid var(--seal-red);
+    outline-offset: 2px;
+  }
+  .detail-timeline-item .dt-label {
+    font-size: 9.5px;
+    color: var(--ink-muted);
+    text-align: center;
+    line-height: 1.25;
+    max-width: 66px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .detail-timeline-item.current .dt-label { color: var(--ink); font-weight: 700; }
+
+  /* ---------- list view ---------- */
+  /* Each row is its own rounded card (gap-separated, not divider lines), with
+     the poster as a full-bleed cover image and a directional scrim behind the
+     text for legibility. A colored .swipe-bg (watch, right-aligned — revealed
+     by dragging left; hide, left-aligned — revealed by dragging right) sits
+     behind the opaque .list-row-content, which JS translates horizontally as
+     the user drags — see the pointer handlers near render(). */
+  .list-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .list-row {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px var(--shadow);
+  }
+  .swipe-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+    opacity: 0;
+  }
+  .swipe-bg.watch { background: var(--moss); justify-content: flex-end; }
+  .swipe-bg.hide { background: var(--seal-red); justify-content: flex-start; }
+  .list-row-content {
+    position: relative;
+    height: 98px;
+    background: var(--bg-raised);
+    touch-action: pan-y;
+    cursor: grab;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  .list-row.dragging .list-row-content { transition: none; cursor: grabbing; }
+  .list-row:not(.dragging) .list-row-content { transition: transform 0.2s ease, background-color 0.3s ease; }
+  /* The poster only fills the left half; its right edge is masked to
+     transparent so it visually fades into list-row-content's background,
+     which JS sets to the poster's own dominant color (see
+     applyListRowColors()) — a per-row "image -> matching color" gradient. */
+  .list-row-bg {
+    position: absolute;
+    inset: 0;
+    width: 60%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    mask-image: linear-gradient(to right, #000 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, #000 60%, transparent 100%);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+  div.list-row-bg { width: 100%; mask-image: none; -webkit-mask-image: none; }
+  .list-row-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.12) 58%, rgba(0,0,0,0) 68%);
+  }
+  .list-row-info {
+    position: absolute;
+    left: 0;
+    right: 76px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 12px;
+  }
+  .list-row-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .list-row-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.82);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .list-type-chip {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .list-priority {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .list-row .watch-toggle { top: 10px; }
+  .list-row .hide-toggle { top: 40px; opacity: 1; }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 760px) {
+    main {
+      padding: 16px 14px max(40px, env(safe-area-inset-bottom));
+    }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(122px, 1fr)); gap: 12px 10px; }
+
+    /* 16px prevents iOS Safari from auto-zooming the page on focus */
+    input[type="search"], select, .filters-btn { font-size: 16px; padding: 11px 12px; }
+    .seg button { padding: 11px 12px; font-size: 13.5px; }
+
+    .watch-toggle { width: 30px; height: 30px; }
+    .watch-toggle svg { width: 14px; height: 14px; }
+    .hide-toggle { top: 42px; width: 30px; height: 30px; }
+    .hide-toggle svg { width: 14px; height: 14px; }
+    /* list-row's watch-toggle grows from 24px->30px here too, so its own
+       top:10px offset (tuned for the 24px desktop size) now leaves the
+       hide-toggle starting exactly where watch-toggle ends — zero gap. */
+    .list-row .hide-toggle { top: 46px; }
+
+    .progress-text { font-size: 11px; }
+    h1 { font-size: 15px; }
+
+    td.col-title { min-width: 150px; }
+
+    /* Reflow the crowded top bar into two clean rows instead of one
+       cramped, truncated line: title+progress, then search | filters | view
+       toggle together as one glued row (see .bar-controls above). */
+    .bar-top { flex-wrap: wrap; row-gap: 10px; }
+    .bar-top .title-block { order: 1; flex: 1 1 auto; min-width: 0; margin-right: 0; }
+    .bar-top .progress-text { order: 2; flex: 0 0 auto; }
+    .bar-top .spacer { display: none; }
+    .bar-top .bar-controls { order: 3; flex-basis: 100%; gap: 8px; }
+    .bar-top #q { flex: 1 1 80px; min-width: 0; width: auto; }
+    .bar-top .filters-btn { flex: 0 0 auto; }
+    .bar-top #view-toggle-group { flex: 0 0 auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile, .tile.pressing, .watch-toggle svg { transition: none; }
+    .watch-toggle.just-watched, .detail-action-btn.watch.just-watched { animation: none; }
+    .watch-toggle.just-watched::after { display: none; }
+  }
+
+  /* ---------- easter eggs ---------- */
+  .fx-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 450;
+    pointer-events: none;
+  }
+
+  /* "I am Iron Man" easter egg — deliberately bigger and warmer than the
+     Thanos snap: a repulsor ripple fires the moment the Endgame poster
+     hold completes (arc-reactor cyan-white core, red/gold shockwave
+     ring), then a beat later the full-screen flash + gauntlet + burst
+     below plays. The good guys win here, so this one gets to be extra. */
+  .repulsor-ripple {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border-radius: 50%;
+    z-index: 501;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(circle, #ffffff 0%, #7fd8ff 18%, #ff8c1a 45%, #ff3b30 66%, transparent 78%);
+    box-shadow: 0 0 50px 14px rgba(255, 90, 30, 0.65), 0 0 20px 4px rgba(127, 216, 255, 0.9);
+  }
+  .repulsor-ripple.fire { animation: repulsorBurst 0.5s ease-out; }
+  @keyframes repulsorBurst {
+    0% { opacity: 0; transform: scale(0.3); }
+    30% { opacity: 1; transform: scale(1.4); }
+    100% { opacity: 0; transform: scale(3.2); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .repulsor-ripple.fire { animation: none; }
+  }
+
+  .ironman-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 499;
+    background: radial-gradient(circle at 50% 42%, #fff7e0 0%, #ffb347 32%, #ff3b30 62%, transparent 82%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .ironman-flash.flash { animation: ironManFlash 0.55s ease-out; }
+  @keyframes ironManFlash {
+    0% { opacity: 0; }
+    18% { opacity: 0.95; }
+    100% { opacity: 0; }
+  }
+
+  .ironman-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: radial-gradient(circle at 50% 42%, rgba(160, 30, 10, 0.55) 0%, rgba(30, 6, 4, 0.88) 60%, rgba(10, 2, 1, 0.94) 100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, background-color 0.35s ease;
+  }
+  .ironman-overlay.show { opacity: 1; pointer-events: auto; }
+  .ironman-gauntlet {
+    font-size: 92px;
+    line-height: 1;
+    filter: drop-shadow(0 0 12px rgba(127, 216, 255, 0.9)) drop-shadow(0 0 34px rgba(255, 90, 30, 0.85));
+  }
+  .ironman-overlay.show .ironman-gauntlet { animation: ironManGesture 0.9s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes ironManGesture {
+    0% { transform: scale(0.6) rotate(10deg); filter: drop-shadow(0 0 0 rgba(255, 90, 30, 0)); }
+    35% { transform: scale(1.28) rotate(-6deg); filter: drop-shadow(0 0 14px rgba(127, 216, 255, 1)) drop-shadow(0 0 40px rgba(255, 90, 30, 1)); }
+    55% { transform: scale(0.94) rotate(3deg); }
+    100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 10px rgba(127, 216, 255, 0.8)) drop-shadow(0 0 20px rgba(255, 90, 30, 0.6)); }
+  }
+  .ironman-quote {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #ffd580;
+    text-shadow: 0 0 16px rgba(255, 140, 30, 0.75);
+    text-align: center;
+    padding: 0 20px;
+    opacity: 0;
+  }
+  .ironman-overlay.show .ironman-quote { animation: ironManQuoteIn 0.6s ease 0.5s forwards; }
+  @keyframes ironManQuoteIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ironman-flash.flash { animation: none; }
+    .ironman-overlay.show .ironman-gauntlet, .ironman-overlay.show .ironman-quote { animation: none; }
+  }
+
+  .doom-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-align: center;
+    background: radial-gradient(circle at center, rgba(18, 61, 34, 0.94), rgba(4, 10, 6, 0.97));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    padding: 20px;
+  }
+  .doom-overlay.show { opacity: 1; pointer-events: auto; }
+  .doom-mask { filter: drop-shadow(0 0 18px rgba(70, 200, 120, 0.5)); }
+  .doom-overlay.show .doom-mask { animation: doomPulse 1.8s ease-in-out infinite, doomIn 0.5s cubic-bezier(.2,1.4,.4,1); }
+  @keyframes doomPulse {
+    0%, 100% { filter: drop-shadow(0 0 18px rgba(70, 200, 120, 0.5)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 34px rgba(70, 200, 120, 0.9)); transform: scale(1.04); }
+  }
+  @keyframes doomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .doom-title {
+    margin-top: 16px;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #e7c66b;
+    text-shadow: 0 0 16px rgba(231, 198, 107, 0.6);
+    opacity: 0;
+  }
+  .doom-sub {
+    margin-top: 6px;
+    font-size: 13px;
+    color: rgba(217, 201, 138, 0.85);
+    opacity: 0;
+  }
+  .doom-overlay.show .doom-title, .doom-overlay.show .doom-sub { animation: doomIn 0.5s ease 0.15s forwards; }
+  .doom-overlay.show .doom-sub { animation-delay: 0.28s; }
+
+  .snap-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 499;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .snap-flash.flash { animation: snapFlash 0.5s ease-out; }
+  @keyframes snapFlash {
+    0% { opacity: 0; }
+    12% { opacity: 0.85; }
+    100% { opacity: 0; }
+  }
+  .snap-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: rgba(5, 5, 8, 0);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, background-color 0.35s ease;
+  }
+  .snap-overlay.show { opacity: 1; pointer-events: auto; background: rgba(5, 5, 8, 0.55); }
+  .snap-gauntlet { font-size: 92px; line-height: 1; }
+  .snap-overlay.show .snap-gauntlet { animation: snapGesture 0.9s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes snapGesture {
+    0% { transform: scale(0.6) rotate(-15deg); filter: drop-shadow(0 0 0 rgba(255, 214, 120, 0)); }
+    35% { transform: scale(1.25) rotate(8deg); filter: drop-shadow(0 0 28px rgba(255, 214, 120, 0.9)); }
+    55% { transform: scale(0.92) rotate(-4deg); }
+    100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 10px rgba(255, 214, 120, 0.5)); }
+  }
+  .snap-quote {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #f2e6c9;
+    text-align: center;
+    max-width: 260px;
+    opacity: 0;
+  }
+  .snap-overlay.show .snap-quote { animation: snapQuoteIn 0.6s ease 0.5s forwards; }
+  @keyframes snapQuoteIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .doom-overlay.show .doom-mask, .snap-overlay.show .snap-gauntlet, .snap-flash.flash { animation: none; }
+  }
